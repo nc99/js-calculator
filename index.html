@@ -1,0 +1,557 @@
+<!doctype html>
+<html>
+<head>
+        <title>nc99 JavaScript</title>
+        <link href='http://fonts.googleapis.com/css?family=Anonymous+Pro' rel='stylesheet' type='text/css'>
+        <style type="text/css">
+        	body {
+        		font-family: 'Anonymous Pro', monospace;
+        		font-size: 16px;
+        	}
+
+            #about a:link,
+            #about a:visited {
+                color: #555555;
+            }
+
+        	#functions a:link,
+            #functions a:visited {
+        		color: #0000FF;
+        	}
+
+        	#status {
+        		color: #CC0000;
+        	}
+            #status a:link, 
+            #status a:visited {
+                color: #CC0000;
+            }
+
+        	#output {
+        		color: #000000;
+        		width: 95%;
+        		word-wrap: break-word;
+        	}
+
+            #inputFieldSection a:link,
+            #inputFieldSection a:visited {
+                color: #0000FF;
+            }
+            .inputField {
+                border: 1px solid #cccccc;
+                height: 20px;
+                width: 80%;
+                outline: none;
+                font-family: 'Anonymous Pro', monospace;
+                font-size: 16px;
+                color: #cccccc;
+                transition: border 0.5s ease,
+                            color 0.5s ease;
+            }
+
+            span.bold {
+            	font-weight: bold;
+            }
+            span.subText {
+            	color: #888888;
+            	float: right;
+            }
+        </style>
+
+        <script src="http://www-cs-students.stanford.edu/~tjw/jsbn/jsbn.js"></script>
+        <script src="http://www-cs-students.stanford.edu/~tjw/jsbn/jsbn2.js"></script>
+        <script>
+        // Variables
+        var inputHistory = [];
+        var outputHistory = [];
+
+        // Functions
+        function factorial(args) {
+        	var input = new BigInteger(args[0].toString(),10);
+        	var output = BigInteger.ONE;
+
+        	while (input.toString() !== "1") {
+        		output = output.multiply(input);
+        		input = input.subtract(BigInteger.ONE);
+        	}
+
+        	return output.toString();
+        }
+
+        function getPiDigits(input) {
+        	var output = 0;
+        	for (var i = 0; i <= input; i++) {
+        		output = output + (Math.pow(16, -i)) * ( (4 / (8 * i + 1)) - (2 / (8 * i + 4)) - (1 / (8 * i + 5)) - (1 / (8 * i + 6)) );
+        	}
+        	return output;
+        }
+
+        function factor(input) {
+            if (input != Math.round(input)) {
+                setStatusMessage("Number to be factored must be an integer");
+                return "Out of Domain";
+            }
+
+            var output = [];
+        	
+            if (input < 0) {
+                output.push(-1);
+                input = input * -1;
+            }
+
+            var possibleFactor = 2;
+            var upperLimit = Math.round(Math.sqrt(input));
+
+        	while (possibleFactor <= upperLimit) {
+                if (input % possibleFactor == 0) {
+                    if (isPrime(possibleFactor)) {
+                        output.push(possibleFactor);
+                    } else {
+                        output.push(factor(possibleFactor));
+                    }
+                    if (isPrime(input / possibleFactor)) {
+                        output.push(input / possibleFactor);
+                    } else {
+                        output.push(factor(input / possibleFactor));
+                    }
+                    return displayArray(output);
+                } else {
+                    if (possibleFactor == 2) {
+                        possibleFactor--;
+                    }
+                    possibleFactor = possibleFactor + 2;
+                }
+            }
+
+            output.push(input);
+
+            return displayArray(output);
+        }
+
+        function displayArray(args) {
+        	var output = "";
+
+        	for (var i = 0; i < args.length; i++) {
+        		if (i == 0) {
+        			output = args[i];
+        		} else {
+        			output +=  "," + args[i]
+        		}
+        	}
+
+        	return output;
+        }
+
+        function perfect(input) {
+            return Math.pow(2, (input - 1)) * (Math.pow(2, input) - 1);
+        }
+
+        function isPrime(args) {
+        	var input = args[0];
+
+            if (factor(input) == [input]) {
+            	return true;
+            } else {
+            	return false;
+            }
+        }
+
+        function gamma(args) {
+        	var input = args[0];
+
+            // Constants
+            var e = 2.7182818284590452353602874713526624977572;
+            var y = 0.5772156649015328606065120900824024310421;
+
+            // Calculate Gamma
+            var output = Math.pow(e, (-1 * y * input)) / input;
+            for (var n = 1; n <= 100000; n++) {
+                output = output * Math.pow((1 + (input / n)), -1) * Math.pow(e, (input / n));
+            }
+            return output;
+        }
+
+        function calculateE(args) {
+            var output = 0;
+            for (var i = 0; i <= args[0]; i++) {
+                output = output + (1 / (parseInt(factorial(i))));
+            }
+            return output;
+        }
+
+        function sum(args) {
+            var output = 0;
+            for (var i = 0; i < args.length; i++) {
+                output = output + parseInt(args[i]);
+            }
+            return output;
+        }
+
+        function toBase10(input) {
+        	return new BigInteger(input[0], input[1]).toString();
+        }
+
+        function sn(args) {
+        	var input = args[0];
+        	var precision = args[1];
+        	var output = "";
+
+        	var inputChars = input.split("");
+
+        	for (var i = 0; (i < inputChars.length) && (i < (precision - 1)); i++) {
+        		output = output + inputChars[i];
+        		if (i == 0) {
+        			output = output + ".";
+        		}
+        	}
+
+        	if (i < inputChars.length) {
+        		if (parseInt(inputChars[i + 1]) > 4) {
+        			// Round up
+        			output = output + (parseInt(inputChars[i]) + 1);
+        		} else {
+        			// Round down
+        			output = output + inputChars[i];
+        		}
+        	}
+
+        	return output + " x 10^" + inputChars.length;
+        }
+
+        function help(args) {
+        	var commands = [["factorial","does stuff"],["pi","does stuff"]];
+
+        	var output = [];
+
+        	for (var i = 0; i < commands.length; i++) {
+        		output.push(commands[i][0] + ": " + commands[i][1]);
+        	}
+
+        	return output;
+        }
+
+        // Functions dealing with text output
+        function outputLine(input) {
+        	outputText(input);
+        
+       		// Add line break at the end
+       		var br = document.createElement("br");
+       		document.getElementById("output").appendChild(br);
+        }
+
+        function outputDoubleLine(input) {
+            outputLine(input);
+            outputLine("");
+        }
+
+        function outputBoldLine(input) {
+            var bold = document.createElement("b");
+            document.getElementById("output").appendChild(bold).appendChild(document.createTextNode(input));
+
+            // Add line break at the end
+            var br = document.createElement("br");
+            document.getElementById("output").appendChild(br);
+        }
+
+        function outputText(input) {
+       		document.getElementById("output").appendChild(document.createTextNode(input));
+        }
+
+        function testFunction() {
+        	outputFormatted(["input","time","output"]);
+        }
+
+        function outputFormatted(args) {
+        	var userInput = args[0];
+        	var subInput = args[1];
+        	var outputContent = args[2];
+
+        	// Output what the user typed in bold
+        	var boldText = document.createElement("span");
+        	boldText.setAttribute("class","bold");
+        	boldText.appendChild(document.createTextNode(userInput));
+        	document.getElementById("output").appendChild(boldText);
+
+        	// Output time information next to the user input
+        	var subText = document.createElement("span");
+        	subText.setAttribute("class","subText");
+        	subText.appendChild(document.createTextNode(subInput));
+        	document.getElementById("output").appendChild(subText);
+
+        	if (typeof outputContent != "object") {
+        		outputContent = [outputContent];
+        	}
+
+        	// Output the actual function output
+			var output = document.createElement("span");
+        	output.setAttribute("class","output");
+
+        	for (var i = 0; i < outputContent.length; i++) {
+        		output.appendChild(document.createTextNode(outputContent[i]));
+        		output.appendChild(requestLinebreak());
+        	}
+
+        	document.getElementById("output").appendChild(requestLinebreak());
+       		document.getElementById("output").appendChild(output);
+
+        	// Append two new lines at the end
+        	document.getElementById("output").appendChild(requestLinebreak());
+        }
+
+        function requestLinebreak() {
+        	return document.createElement("br");
+        }
+
+        function clearOutput() {
+        	document.getElementById("output").innerHTML = "";
+            clearStatus();
+        }
+
+        function setStatusMessage(input) {
+            setStatus(input + " <a onclick=\"clearStatus()\" href=\"#\">Dismiss</a>");
+        }
+
+        function clearStatus() {
+            setStatus("");
+        }
+
+        function setStatus(input) {
+        	document.getElementById("status").innerHTML = input;
+        }
+
+        function hideAbout() {
+            document.getElementById("about").innerHTML = "<a onclick=\"showAbout()\" href=\"#\">Show</a>";
+        }
+
+        function showAbout() {
+            document.getElementById("about").innerHTML = "<br>factorial(n) - outputs factorial of non-negative integer n<br>pi(accuracy) - calculates Pi using the BBP formula to specified accuracy<br>factor(n) - factors non-negative integer n<br>perfect(n) - uses a formula to create a possible perfect number<br>isPrime(p) - ineffeciently tests if p is prime<br>gamma(n) - returns the gamma of number n<br>e(accuracy) - calculates e to the specified accuracy<br>sum(addend1,addend2,...) - adds up all the arguments<br>toBase10(number,base) - changes input number in specified base to base 10<br>sn(number,significant figures) - expresses an integer in scientific notation with specified number of significant figures<br>clear() - clears the output space<br><a onclick=\"hideAbout()\" href=\"#\">Hide</a>";
+        }
+
+
+        // Parse the input
+        function submitInput() {
+            var input = document.getElementById("inputField").value;
+
+            var startDate = new Date();
+
+            if (input == "clear()") {
+                evaluateNestedFunctions(input);
+            } else {
+                var output = evaluateNestedFunctions(input);
+                var endDate = new Date();
+            	var timeDifference = endDate.getTime() - startDate.getTime();
+
+            	outputFormatted([input,timeDifference + " ms",output]);
+                inputHistory.push(input);
+            }
+
+            // Always execute after a command is submitted
+            inputHistoryReset(); // Sets the current history to what is being typed (not something that you would get to from an up/down arrow)
+            clearStatus(); // Clears any warning messages
+            document.getElementById("inputField").value = ""; // Clears the text field
+        }
+
+        function evaluateNestedFunctions(input) {
+            var nestedFunction = input.substring(0, input.indexOf(")") + 1);
+
+            // This section gets the nested function to evaluate
+
+            // Split at first comma going back from ( of the function if there is one or
+            // Split at first ( going back from ( of the function
+            
+            if (nestedFunction.substring(0,nestedFunction.lastIndexOf("(")).lastIndexOf(",") > nestedFunction.substring(0,nestedFunction.lastIndexOf("(")).lastIndexOf(")")) {
+            	// There is a comma before the function name
+                nestedFunction = nestedFunction.substring(nestedFunction.lastIndexOf(",",nestedFunction.lastIndexOf("(") - 1) + 1);
+            } else {
+            	// There is a ( before the function name
+            	nestedFunction = nestedFunction.substring(nestedFunction.lastIndexOf("(",nestedFunction.lastIndexOf("(") - 1) + 1);
+            }
+
+            nestedFunctionBegin = input.indexOf(nestedFunction);
+            nestedFunctionEnd = input.indexOf(")");
+
+
+            // This section evaluates the nested function if the original input has a nested function.
+            // If the original input does not have a nested function, it returns the evaluation of the original.
+
+            if (input.split("(").length > 2) {
+            	// Original input has a nested function
+            	// Evaluate the nested function and replace it with its value, then evaluateNestedFunctions on that
+                var firstPart = input.substring(0, nestedFunctionBegin);
+                var secondPart = input.substring(nestedFunctionEnd + 1);
+                return evaluateNestedFunctions(firstPart + evaluateFunction(nestedFunction) + secondPart);
+            }
+
+            // Original input does not have a nested function, so return the original input evaluated.
+            return evaluateFunction(nestedFunction);
+        }
+
+        function evaluateFunction(input) {
+            var functionName = getFunctionName(input);
+            var args = getArguments(input);
+            if (correctSyntax(input)) {
+                    if (functionName == "") {
+                        return args;
+                    } else if (functionName == "factorial") {
+                        return factorial(args);
+                    } else if (functionName == "pi") {
+                        return getPiDigits(args[0]);
+                    } else if (functionName == "factor") {
+                        return factor(args[0]);
+                    } else if (functionName == "perfect") {
+                        return perfect(args[0]);
+                    } else if (functionName == "isPrime") {
+                        return isPrime(args[0]);
+                    } else if (functionName == "gamma") {
+                        return gamma(args[0]);
+                    } else if (functionName == "e") {
+                        return calculateE(args);
+                    } else if (functionName == "sum") {
+                        return sum(args);
+                    } else if (functionName == "toBase10") {
+                    	return toBase10(args);
+                    } else if (functionName == "sn") {
+                    	return sn(args);
+                    }
+
+
+                    else if (functionName == "help") {
+                        return help(args);
+                    } else if (functionName == "clear") {
+                        clearOutput();
+                        clearStatus();
+                        //clearInputHistory();
+                        return "";
+                    }
+
+                    else {
+                        setStatusMessage("Unknown command: \"" + input + "\"");
+                        return "Unknown command";
+                    }
+                } else {
+                    setStatusMessage("Syntax error: \"" + input + "\"");
+                    return "Syntax error";
+                }
+                return "Unknown error";
+        }
+
+        function getFunctionName(input) {
+            return input.substring(0, input.indexOf("("));
+        }
+        function getArguments(input) {
+            return input.substring(input.indexOf("(") + 1, input.lastIndexOf(")")).split(',');
+        }
+
+        // Text field key presses
+        function textFieldKeyCheck(event) {
+            if (event.keyCode == 13) {
+                submitInput();
+            } else if (event.keyCode == 38) {
+                inputHistoryIncrease();
+            } else if (event.keyCode == 40) {
+                inputHistoryDecrease();
+            }
+
+            updateTextFieldStyle();
+        }
+
+        // Text field color changes
+        var isFocused = false;
+        function updateTextFieldStyle() {
+        	isFocused = true;
+            var input = document.getElementById("inputField").value;
+            if (input == "") {
+                // Blue
+                document.getElementById("inputField").style.border = '1px solid #38e';
+                document.getElementById("inputField").style.color = "#000000"
+            } else if (correctSyntax(input)) {
+                // Green
+                document.getElementById("inputField").style.border = '1px solid #33bb55';
+                document.getElementById("inputField").style.color = "#000000"
+            } else {
+                // Red
+                document.getElementById("inputField").style.border = '1px solid #ff0033';
+                document.getElementById("inputField").style.color = "#000000"
+            }
+        }
+        function blurTextField() {
+        	isFocused = false;
+            document.getElementById("inputField").style.border = "1px solid #bbbbbb";
+            //document.getElementById("inputField").style.color = "#cccccc"
+        }
+        function textFieldHoverEffect() {
+        	if (!isFocused) {
+        		document.getElementById("inputField").style.border = "1px solid #999999";
+        	}
+        }
+        function textFieldUnhoverEffect() {
+        	if (!isFocused) {
+        		document.getElementById("inputField").style.border = "1px solid #bbbbbb";
+        	}
+        }
+
+        function correctSyntax(input) {
+            if ((input.split("(").length == input.split(")").length) && (input.split("(").length > 1)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // Text field history on up/down arrow
+        var current = inputHistory.length; // This is the input history currently viewed.
+        var typingInProgress = ""; // This is what the user has typed but has then left by pressing the up arrow.
+
+        function inputHistoryIncrease() {
+        	if (current == inputHistory.length) {
+                    typingInProgress = document.getElementById("inputField").value;
+            }
+
+            if (current > 0) {
+                current--;
+                document.getElementById("inputField").value = inputHistory[current];
+            }
+        }
+        function inputHistoryDecrease() {
+        	if (current == inputHistory.length) {
+                    typingInProgress = document.getElementById("inputField").value;
+            }
+
+            if (current > inputHistory.length - 2) {
+                document.getElementById("inputField").value = typingInProgress;
+                inputHistoryReset();
+            } else {
+                current++;
+                document.getElementById("inputField").value = inputHistory[current];
+            }
+        }
+        function inputHistoryReset() {
+            current = inputHistory.length;
+        }
+        function clearInputHistory() {
+            inputHistory = [];
+        }
+        </script>
+</head>
+<body>
+	<p>
+        Click "show" to see a list of commands you can use.<br>
+        <br>
+        Commands:
+        <span id="about">
+            <a onclick="showAbout()" href="#">Show</a>
+        </span>
+    </p>
+
+    <p id="output">
+    </p>
+
+    <p id="status">
+    </p>
+
+    <p id="inputFieldSection">
+        <input type="text" onkeydown="textFieldKeyCheck(event)" onkeyup="updateTextFieldStyle()" onfocus="updateTextFieldStyle()" onmouseover="textFieldHoverEffect()" onmouseout="textFieldUnhoverEffect()" onblur="blurTextField()" name="inputField" class="inputField" id="inputField" autofocus>
+    </p>
+    
+</body>
+</html>
