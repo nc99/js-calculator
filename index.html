@@ -13,9 +13,6 @@
         var inputHistory = [];
         var outputHistory = [];
 
-        // Functions
-        
-
         // Functions dealing with text output
         function outputLine(input) {
         	outputText(input);
@@ -64,16 +61,35 @@
         	subText.appendChild(document.createTextNode(subInput));
         	document.getElementById("output").appendChild(subText);
 
-        	if (typeof outputContent != "object") {
-        		outputContent = [outputContent];
-        	}
-
         	// Output the actual function output
 			var output = document.createElement("span");
         	output.setAttribute("class","output");
 
-        	for (var i = 0; i < outputContent.length; i++) {
-        		output.appendChild(document.createTextNode(outputContent[i]));
+        	if (outputContent.type == "plaintext") {
+        		for (var i = 0; i < outputContent.lines.length; i++) {
+        			output.appendChild(document.createTextNode(outputContent.lines[i]));
+        			output.appendChild(requestLinebreak());
+        		}
+        	} else if (outputContent.type == "pixels") {
+        		var canvas = document.createElement("canvas");
+        		
+        		canvas.setAttribute("width",outputContent.dimensions.x * 1);
+        		canvas.setAttribute("height",outputContent.dimensions.y * 1);
+        		canvas.setAttribute("style","border:1px solid #eeeeee;");
+
+        		for (var i = 0; i < outputContent.pixels.length; i++) {
+        			canvas.getContext("2d").fillStyle = outputContent.pixels[i].color;
+        			canvas.getContext("2d").fillRect(outputContent.pixels[i].x * 1,outputContent.pixels[i].y * 1,1,1);
+        		}
+
+        		output.appendChild(canvas);
+        		output.appendChild(requestLinebreak());
+        	}
+
+
+
+        	else {
+   		   		output.appendChild(document.createTextNode(outputContent));
         		output.appendChild(requestLinebreak());
         	}
 
@@ -198,6 +214,10 @@
                     	return toBase10(args);
                     } else if (functionName == "sn") {
                     	return sn(args);
+                    } else if (functionName == "drawPixels") {
+                    	return drawPixels(args);
+                    } else if (functionName == "mandelbrot") {
+                    	return mandelbrot(args);
                     }
 
 
