@@ -3,6 +3,7 @@
 <head>
         <title>nc99 JavaScript</title>
         <link href='http://fonts.googleapis.com/css?family=Anonymous+Pro' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
         <link href='Stylesheets/main.css' rel='stylesheet' type='text/css'>
 
         <script src="http://www-cs-students.stanford.edu/~tjw/jsbn/jsbn.js"></script>
@@ -44,6 +45,72 @@
         	outputFormatted(["input","time","output"]);
         }
 
+        function displayObject(args) {
+        	var object = args;
+
+			var output = document.createElement("span");
+        	output.setAttribute("class","output");
+
+        	if (object.type == "array") {
+        		for (var i = 0; i < object.objects.length; i++) {
+        			if (i == 0) {
+        				output.appendChild(document.createTextNode("["));
+        			}
+
+        			output.appendChild(displayObject(object.objects[i]));
+
+        			if (i == object.objects.length - 1) {
+        				output.appendChild(document.createTextNode("]"));
+        			} else {
+        				output.appendChild(document.createTextNode(","));
+        			}
+        		}
+        	} else if (object.type == "text") {
+        		output.appendChild(document.createTextNode(object.value));
+        	} else if (object.type == "linedtext") {
+        		for (var i = 0; i < object.lines.length; i++) {
+        			output.appendChild(document.createTextNode(object.lines[i].value));
+        			output.appendChild(requestLinebreak());
+        		}
+        	} else if (object.type == "canvas") {
+				output.appendChild(object.canvas);
+        	} else if (object.type == "png") {
+        		output.appendChild(object.image);
+        	} else if (object.type == "error") {
+        		var error_span = document.createElement("span");
+        		error_span.setAttribute("class","error");
+
+        		var bold_span = document.createElement("span");
+        		bold_span.setAttribute("class","bold");
+
+        		bold_span.appendChild(document.createTextNode("Error: "));
+        		error_span.appendChild(bold_span);
+        		error_span.appendChild(document.createTextNode(object.message));
+        		error_span.appendChild(requestLinebreak());
+        		error_span.appendChild(document.createTextNode("From: " + object.from));
+        		//error_span.appendChild(requestLinebreak());
+        		//error_span.appendChild(document.createTextNode("Details: " + object.details));
+
+        		output.appendChild(error_span);
+        	}
+
+        	else {
+        		var error_span = document.createElement("span");
+        		error_span.setAttribute("class","error");
+
+        		var bold_span = document.createElement("span");
+        		bold_span.setAttribute("class","bold");
+
+        		bold_span.appendChild(document.createTextNode("Error: "));
+        		error_span.appendChild(bold_span);
+        		error_span.appendChild(document.createTextNode("Cannot display output"));
+
+        		output.appendChild(error_span);
+        	}
+
+        	return output;
+        }
+
         function outputFormatted(args) {
         	var userInput = args[0];
         	var subInput = args[1];
@@ -62,42 +129,16 @@
         	document.getElementById("output").appendChild(subText);
 
         	// Output the actual function output
-			var output = document.createElement("span");
-        	output.setAttribute("class","output");
-
-        	if (outputContent.type == "plaintext") {
-        		for (var i = 0; i < outputContent.lines.length; i++) {
-        			output.appendChild(document.createTextNode(outputContent.lines[i]));
-        			output.appendChild(requestLinebreak());
-        		}
-        	} else if (outputContent.type == "pixels") {
-        		var canvas = document.createElement("canvas");
-        		
-        		canvas.setAttribute("width",outputContent.dimensions.x * 1);
-        		canvas.setAttribute("height",outputContent.dimensions.y * 1);
-        		canvas.setAttribute("style","border:1px solid #eeeeee;");
-
-        		for (var i = 0; i < outputContent.pixels.length; i++) {
-        			canvas.getContext("2d").fillStyle = outputContent.pixels[i].color;
-        			canvas.getContext("2d").fillRect(outputContent.pixels[i].x * 1,outputContent.pixels[i].y * 1,1,1);
-        		}
-
-        		output.appendChild(canvas);
-        		output.appendChild(requestLinebreak());
-        	}
-
-
-
-        	else {
-   		   		output.appendChild(document.createTextNode(outputContent));
-        		output.appendChild(requestLinebreak());
-        	}
+			
+        	var output = displayObject(outputContent);
+        	output.appendChild(requestLinebreak());
 
         	document.getElementById("output").appendChild(requestLinebreak());
        		document.getElementById("output").appendChild(output);
 
         	// Append two new lines at the end
         	document.getElementById("output").appendChild(requestLinebreak());
+        	document.getElementById("output").scrollTop = document.getElementById("output").scrollHeight;
         }
 
         function requestLinebreak() {
@@ -126,14 +167,13 @@
         }
 
         function showAbout() {
-            document.getElementById("about").innerHTML = "<br>factorial(n) - outputs factorial of non-negative integer n<br>pi(accuracy) - calculates Pi using the BBP formula to specified accuracy<br>factor(n) - factors non-negative integer n<br>perfect(n) - uses a formula to create a possible perfect number<br>isPrime(p) - ineffeciently tests if p is prime<br>gamma(n) - returns the gamma of number n<br>e(accuracy) - calculates e to the specified accuracy<br>sum(addend1,addend2,...) - adds up all the arguments<br>toBase10(number,base) - changes input number in specified base to base 10<br>sn(number,significant figures) - expresses an integer in scientific notation with specified number of significant figures<br>clear() - clears the output space<br><a onclick=\"hideAbout()\" href=\"#\">Hide</a>";
+            document.getElementById("about").innerHTML = "<br>type 'help()' for help<br><a onclick=\"hideAbout()\" href=\"#\">Hide</a>";
         }
 
 
         // Parse the input
         function submitInput() {
             var input = document.getElementById("inputField").value;
-
             var startDate = new Date();
 
             if (input == "clear()") {
@@ -151,6 +191,14 @@
             inputHistoryReset(); // Sets the current history to what is being typed (not something that you would get to from an up/down arrow)
             clearStatus(); // Clears any warning messages
             document.getElementById("inputField").value = ""; // Clears the text field
+        }
+
+        var stored_arguments = [];
+        var special_char = "$";
+
+        function interpretInput(arg) {
+        	var input = arg;
+        	input = preprocess(input);
         }
 
         function evaluateNestedFunctions(input) {
@@ -172,7 +220,6 @@
             nestedFunctionBegin = input.indexOf(nestedFunction);
             nestedFunctionEnd = input.indexOf(")");
 
-
             // This section evaluates the nested function if the original input has a nested function.
             // If the original input does not have a nested function, it returns the evaluation of the original.
 
@@ -181,43 +228,65 @@
             	// Evaluate the nested function and replace it with its value, then evaluateNestedFunctions on that
                 var firstPart = input.substring(0, nestedFunctionBegin);
                 var secondPart = input.substring(nestedFunctionEnd + 1);
-                return evaluateNestedFunctions(firstPart + evaluateFunction(nestedFunction) + secondPart);
+
+                stored_arguments.push(evaluateNestedFunctions(nestedFunction));
+                var placeholder = stored_arguments.length - 1;
+
+                return evaluateNestedFunctions(firstPart + special_char + placeholder + secondPart);
+            } else {
+                // Original input does not have a nested function, so return the original input evaluated.
+                if (input.split(special_char).length <= 1) {
+                    var argument = input.substring(input.substring(0,input.indexOf(")")).lastIndexOf("(") + 1,input.indexOf(")"));
+
+                    // Check if array or not
+                    if (argument.split(",").length > 1) {
+                        // If is array
+                        var argument_array = argument.split(",");
+                        var output = {"type":"array","objects":[]};
+                        for (var i = 0; i < argument_array.length; i++) {
+                            output.objects.push({"type":"text","value":argument_array[i]});
+                        }
+                    } else {
+                        // If is not array
+                        var output = {"type":"text","value":argument};
+                    }
+
+                    var firstPartOfArgument = input.substring(0,input.substring(0,input.indexOf(")")).lastIndexOf("(") + 1);
+                    var secondPartOfArgument = input.substring(input.lastIndexOf(")"));
+  
+                    stored_arguments.push(output);
+                    return evaluateNestedFunctions(firstPartOfArgument + special_char + (stored_arguments.length - 1) + secondPartOfArgument);
+                } else {
+                    return evaluateFunction(nestedFunction);
+                }
             }
 
-            // Original input does not have a nested function, so return the original input evaluated.
-            return evaluateFunction(nestedFunction);
+            
         }
+
 
         function evaluateFunction(input) {
             var functionName = getFunctionName(input);
             var args = getArguments(input);
+
             if (correctSyntax(input)) {
                     if (functionName == "") {
                         return args;
                     } else if (functionName == "factorial") {
                         return factorial(args);
-                    } else if (functionName == "pi") {
-                        return getPiDigits(args[0]);
-                    } else if (functionName == "factor") {
-                        return factor(args[0]);
-                    } else if (functionName == "perfect") {
-                        return perfect(args[0]);
-                    } else if (functionName == "isPrime") {
-                        return isPrime(args[0]);
-                    } else if (functionName == "gamma") {
-                        return gamma(args[0]);
-                    } else if (functionName == "e") {
-                        return calculateE(args);
-                    } else if (functionName == "sum") {
-                        return sum(args);
-                    } else if (functionName == "toBase10") {
-                    	return toBase10(args);
-                    } else if (functionName == "sn") {
-                    	return sn(args);
                     } else if (functionName == "drawPixels") {
                     	return drawPixels(args);
                     } else if (functionName == "mandelbrot") {
                     	return mandelbrot(args);
+                    } else if (functionName == "canvas") {
+                        return canvas(args);
+                    } else if (functionName == "png") {
+                        return png(args);
+                    }
+
+
+                    else if (functionName == "testing") {
+                    	return testing(args);
                     }
 
 
@@ -231,11 +300,9 @@
                     }
 
                     else {
-                        setStatusMessage("Unknown command: \"" + input + "\"");
                         return "Unknown command";
                     }
                 } else {
-                    setStatusMessage("Syntax error: \"" + input + "\"");
                     return "Syntax error";
                 }
                 return "Unknown error";
@@ -245,7 +312,8 @@
             return input.substring(0, input.indexOf("("));
         }
         function getArguments(input) {
-            return input.substring(input.indexOf("(") + 1, input.lastIndexOf(")")).split(',');
+            var index_number = parseInt(input.substring(input.indexOf(special_char) + 1, input.lastIndexOf(")")));
+            return stored_arguments[index_number];
         }
 
         // Text field key presses
@@ -340,14 +408,16 @@
         </script>
 </head>
 <body>
+	<h1>nc99 JavaScript Calculator</h1>
 	<p>
-        Click "show" to see a list of commands you can use.<br>
-        <br>
-        Commands:
+        Type <span class="code">help()</span> for a list of commands.
+
+        <!--
         <span id="about">
             <a onclick="showAbout()" href="#">Show</a>
-        </span>
+        </span>-->
     </p>
+    <hr>
 
     <p id="output">
     </p>
@@ -356,7 +426,9 @@
     </p>
 
     <p id="inputFieldSection">
-        <input type="text" onkeydown="textFieldKeyCheck(event)" onkeyup="updateTextFieldStyle()" onfocus="updateTextFieldStyle()" onmouseover="textFieldHoverEffect()" onmouseout="textFieldUnhoverEffect()" onblur="blurTextField()" name="inputField" class="inputField" id="inputField" autofocus>
+        <input type="text" onkeydown="textFieldKeyCheck(event)" onkeyup="updateTextFieldStyle()" onfocus="updateTextFieldStyle()" onmouseover="textFieldHoverEffect()" onmouseout="textFieldUnhoverEffect()" onblur="blurTextField()" name="inputField" class="inputField" id="inputField" spellcheck="false" autofocus>
+        <span id="progress">
+        </span>
     </p>
     
 </body>
