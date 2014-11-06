@@ -69,13 +69,18 @@
         		output.appendChild(document.createTextNode(object.value));
         	} else if (object.type == "linedtext") {
         		for (var i = 0; i < object.lines.length; i++) {
-        			output.appendChild(document.createTextNode(object.lines[i].value));
+        			output.appendChild(displayObject(object.lines[i]));
 
                     if (i != object.lines.length - 1) {
                         output.appendChild(requestLinebreak());
                     }
         		}
-        	} else if (object.type == "canvas") {
+        	} else if (object.type == "code") {
+                var code_span = document.createElement("span");
+                code_span.setAttribute("class","code");
+                code_span.appendChild(document.createTextNode(object.value));
+                output.appendChild(code_span);
+            } else if (object.type == "canvas") {
 				output.appendChild(object.canvas);
         	} else if (object.type == "png") {
         		output.appendChild(object.image);
@@ -89,8 +94,8 @@
         		bold_span.appendChild(document.createTextNode("Error: "));
         		error_span.appendChild(bold_span);
         		error_span.appendChild(document.createTextNode(object.message));
-        		error_span.appendChild(requestLinebreak());
-        		error_span.appendChild(document.createTextNode("From: " + object.from));
+        		//error_span.appendChild(requestLinebreak());
+        		//error_span.appendChild(document.createTextNode("From: " + object.from));
         		//error_span.appendChild(requestLinebreak());
         		//error_span.appendChild(document.createTextNode("Details: " + object.details));
 
@@ -309,6 +314,8 @@
                         return canvas(args);
                     } else if (functionName == "png") {
                         return png(args);
+                    } else if (functionName == "sum") {
+                        return sum(args);
                     }
 
 
@@ -327,12 +334,12 @@
                     }
 
                     else {
-                        return "Unknown command";
+                        return {"type":"error","message":"Unknown function","from":"function evaluator"};
                     }
                 } else {
-                    return "Syntax error";
+                    return {"type":"error","message":"Syntax Error","from":"function evaluator"};
                 }
-                return "Unknown error";
+                return {"type":"error","message":"Unknown error","from":"function evaluator"};
         }
 
         function getFunctionName(input) {
