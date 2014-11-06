@@ -236,6 +236,7 @@
             } else {
                 // Original input does not have a nested function, so return the original input evaluated.
                 if (input.split(special_char).length <= 1) {
+                    // Function does not have a special character
                     var argument = input.substring(input.substring(0,input.indexOf(")")).lastIndexOf("(") + 1,input.indexOf(")"));
 
                     // Check if array or not
@@ -257,6 +258,29 @@
                     stored_arguments.push(output);
                     return evaluateNestedFunctions(firstPartOfArgument + special_char + (stored_arguments.length - 1) + secondPartOfArgument);
                 } else {
+                    // Function has a special character
+
+                    var argument = nestedFunction.substring(nestedFunction.indexOf("(") + 1,nestedFunction.indexOf(")"));
+                    if (argument.split(",").length > 1) {
+                        // The argument is multiple and should be treated as an array
+                        var argument_array = argument.split(",");
+                        var argument_output = {"type":"array","objects":[]};
+                        for (var i = 0; i < argument_array.length; i++) {
+                            if (argument_array[i].split(special_char).length <= 1) {
+                                // Argument does not have a special character
+                                argument_output.objects.push({"type":"text","value":argument_array[i]});
+                            } else {
+                                // Argument has a special character
+                                argument_output.objects.push(stored_arguments[parseInt(argument_array[i].substring(argument_array[i].indexOf(special_char) + 1))]);
+                            }
+                        }
+
+                        stored_arguments.push(argument_output);
+
+                        return evaluateNestedFunctions(nestedFunction.substring(0,nestedFunction.indexOf("(") + 1) + special_char + (stored_arguments.length - 1) + ")");
+                    }
+
+
                     return evaluateFunction(nestedFunction);
                 }
             }
@@ -311,7 +335,9 @@
         function getFunctionName(input) {
             return input.substring(0, input.indexOf("("));
         }
-        function getArguments(input) {
+        function getArguments(arg) {
+            var input = arg;
+
             var index_number = parseInt(input.substring(input.indexOf(special_char) + 1, input.lastIndexOf(")")));
             return stored_arguments[index_number];
         }
