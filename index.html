@@ -70,7 +70,10 @@
         	} else if (object.type == "linedtext") {
         		for (var i = 0; i < object.lines.length; i++) {
         			output.appendChild(document.createTextNode(object.lines[i].value));
-        			output.appendChild(requestLinebreak());
+
+                    if (i != object.lines.length - 1) {
+                        output.appendChild(requestLinebreak());
+                    }
         		}
         	} else if (object.type == "canvas") {
 				output.appendChild(object.canvas);
