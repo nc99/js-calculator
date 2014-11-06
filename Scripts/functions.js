@@ -1,10 +1,46 @@
+function dataTypeError(arg) {
+    return {"type":"error","message":"Unnacceptable data input type","from":arg};
+}
+function domainError(arg) {
+    return {"type":"error","message":"Out of domain","from":arg};
+}
+
 function factorial(arg) {
+    if (arg.type != "text") {
+        return dataTypeError("factorial");
+    }
+
     var input = new BigInteger(arg.value.toString(),10);
+
+    if (input.compareTo(BigInteger.ZERO) == -1) {
+        return domainError("factorial");
+    }
+
     var output = BigInteger.ONE;
 
-	while (input.toString() !== "1") {
+	while (input.compareTo(BigInteger.ONE) != -1) {
     	output = output.multiply(input);
     	input = input.subtract(BigInteger.ONE);
+    }
+
+    return {"type":"text","value":output.toString()};
+}
+
+function sum(arg) {
+    if (arg.type != "array") {
+        if (arg.type == "text") {
+            return arg;
+        } else {
+            return dataTypeError("sum");
+        }
+    }
+
+    var input = arg;
+
+    var output = BigInteger.ZERO;
+
+    for (var i = 0; i < input.objects.length; i++) {
+        output = output.add(new BigInteger(input.objects[i].value));
     }
 
     return {"type":"text","value":output.toString()};
@@ -19,6 +55,10 @@ function createText(args) {
 }
 
 function canvas(arg) {
+    if (arg.type != "pixels") {
+        return dataTypeError("canvas");
+    }
+
     var object = arg;
 
     var canvas = document.createElement("canvas");
@@ -41,6 +81,10 @@ function canvas(arg) {
 }
 
 function png(arg) {
+    if (arg.type != "pixels") {
+        return dataTypeError("png");
+    }
+
     var object = arg;
 
     var canvas = document.createElement("canvas");
@@ -87,6 +131,10 @@ function help(arg) {
 }
 
 function drawPixels(arg) {
+    if (arg.type != "array") {
+        return dataTypeError("drawPixels");
+    }
+
     var x_dim = parseInt(arg.objects[0].value);
     var y_dim = parseInt(arg.objects[1].value);
 
@@ -104,6 +152,10 @@ function drawPixels(arg) {
 }
 
 function mandelbrot(arg) {
+    if (arg.type != "array") {
+        return dataTypeError("mandelbrot");
+    }
+
     var input = arg;
     var output = [];
 
