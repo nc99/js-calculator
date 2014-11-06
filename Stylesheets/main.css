@@ -1,6 +1,23 @@
 body {
-	font-family: 'Anonymous Pro', monospace;
+	font-family: 'Source Code Pro', monospace;
 	font-size: 16px;
+}
+
+h1 {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 24px;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #dddddd;
+}
+
+span.code {
+    border: 1px solid #cccccc;
+    background-color: #f0f0f0;
+    border-radius: 2px;
 }
 
 #about a:link,
@@ -37,11 +54,16 @@ body {
     height: 20px;
     width: 80%;
     outline: none;
-    font-family: 'Anonymous Pro', monospace;
+    font-family: 'Source Code Pro', monospace;
     font-size: 16px;
     color: #cccccc;
+    border-radius: 3px;
     transition: border 0.5s ease,
     color 0.5s ease;
+}
+
+span.input-container {
+    background.color: #ffffff;
 }
 
 span.bold {
@@ -51,4 +73,8 @@ span.bold {
 span.subText {
     color: #888888;
     float: right;
+}
+
+span.error {
+    color: #cc2233;
 }
