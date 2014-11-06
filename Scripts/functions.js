@@ -11,7 +11,7 @@ function factorial(arg) {
 }
 
 function testing(arg) {
-    return "";
+    return arg;
 }
 
 function createText(args) {
