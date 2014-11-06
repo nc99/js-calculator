@@ -118,6 +118,7 @@ function help(arg) {
         {"name":"mandelbrot","arguments":["width","height"],"description":"draws a mandelbrot set from (-2+1i) to (1-1i)"},
         {"name":"canvas","arguments":["pixels"],"description":"returns a canvas of the pixels"},
         {"name":"png","arguments":["pixels"],"description":"returns a png image of the pixels"},
+        {"name":"sum","arguments":["addends","..."],"description":"returns sum of the addends"},
         {"name":"clear","arguments":[],"description":"clears the output space"},
     ];
 
