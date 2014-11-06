@@ -72,6 +72,8 @@ function help(arg) {
         {"name":"factorial","arguments":["n"],"description":"factorial of non-negative integer n"},
         {"name":"drawPixels","arguments":["width","height","pixel-x","pixel-y","pixel-color","pixel-x","pixel-y","pixel-color","..."],"description":"draws the pixels on the screen"},
         {"name":"mandelbrot","arguments":["width","height"],"description":"draws a mandelbrot set from (-2+1i) to (1-1i)"},
+        {"name":"canvas","arguments":["pixels"],"description":"returns a canvas of the pixels"},
+        {"name":"png","arguments":["pixels"],"description":"returns a png image of the pixels"},
         {"name":"clear","arguments":[],"description":"clears the output space"},
     ];
 
