@@ -184,7 +184,7 @@ function mandelbrot(arg) {
         colors[8] = createText("#ffffff");
     }
     
-    var c = corner[1];
+    var c = corner[0];alert("working");
     
     while ((c.real < corner[1].real) && (c.imaginary > corner[1].imaginary)) {
         var iterations = mandelbrotTest([c]);
