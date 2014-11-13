@@ -186,7 +186,7 @@ function mandelbrot(arg) {
     
     var c = corner[0];
     
-    while ((c.real < corner[1].real) && (c.imaginary > corner[1].imaginary)) {
+    while ((c.real < corner[1].real) && (c.imaginary > corner[1].imaginary)) {alert();
         var iterations = mandelbrotTest([c]);
 
         output.push(createText((x_dim - (x_dim / Math.abs(corner[0].real - corner[1].real))) + ((x_dim / Math.abs(corner[0].real - corner[1].real)) * c.real)));
