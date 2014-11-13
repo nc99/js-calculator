@@ -191,7 +191,7 @@ function mandelbrot(arg) {
 
         output.push(createText((x_dim - (x_dim / Math.abs(corner[0].real - corner[1].real))) + ((x_dim / Math.abs(corner[0].real - corner[1].real)) * c.real)));
         output.push(createText((y_dim - (y_dim / Math.abs(corner[0].imaginary - corner[1].imaginary))) - ((y_dim / Math.abs(corner[0].imaginary - corner[1].imaginary)) * c.imaginary)));
-
+alert();
         if (iterations > 100) {
             output.push(colors[0]);
         } else if (iterations >= 50) {
