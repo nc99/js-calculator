@@ -171,7 +171,7 @@ function mandelbrot(arg) {
     output[1] = createText(input.objects[1].value);
 
     var colors = [];
-alert("aoesnuhansuhta,.u");
+
     if (colors.length < 9) {
         colors[0] = createText("#000000");
         colors[1] = createText("#888888");
@@ -183,9 +183,9 @@ alert("aoesnuhansuhta,.u");
         colors[7] = createText("#eeeeee");
         colors[8] = createText("#ffffff");
     }
-
+alert("this should work");
     var c = corner[0];
-    
+    alert("you shouldn't be seeing this");
     while ((c.real < corner[1].real) && (c.imaginary > corner[1].imaginary)) {
         var iterations = mandelbrotTest([c]);
 
