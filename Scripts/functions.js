@@ -152,7 +152,7 @@ function drawPixels(arg) {
     return output;
 }
 
-function mandelbrot(arg) {alert("hello francis");
+function mandelbrot(arg) {
     if (arg.type != "array") {
         return dataTypeError("mandelbrot");
     }
@@ -163,9 +163,9 @@ function mandelbrot(arg) {alert("hello francis");
     var x_dim = parseInt(input.objects[0].value);
     var y_dim = parseInt(input.objects[1].value);
 
-    var corner = [];
+    var corner = [];alert("hello francis");
     corner[0] = {"real":parseInt(input.objects[2]),"imaginary":parseInt(input.objects[3])};
-    corner[1] = {"real":parseInt(input.objects[4]),"imaginary":parseInt(input.objects[5])};
+    corner[1] = {"real":parseInt(input.objects[4]),"imaginary":parseInt(input.objects[5])};alert("successsortof");
 
     output[0] = createText(input.objects[0].value);
     output[1] = createText(input.objects[1].value);
