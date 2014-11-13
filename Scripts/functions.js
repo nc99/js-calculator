@@ -152,7 +152,7 @@ function drawPixels(arg) {
     return output;
 }
 
-function mandelbrot(arg) {
+function mandelbrot(arg) {alert("hello francis");
     if (arg.type != "array") {
         return dataTypeError("mandelbrot");
     }
@@ -185,7 +185,7 @@ function mandelbrot(arg) {
     }
 
     var c = corner[0];
-alert("hello francis");
+    
     while ((c.real < corner[1].real) && (c.imaginary > corner[1].imaginary)) {
         var iterations = mandelbrotTest([c]);
 
