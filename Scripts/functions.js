@@ -184,13 +184,13 @@ function mandelbrot(arg) {
         colors[8] = createText("#ffffff");
     }
 
-    var c = {"real":-2,"imaginary":1};
+    var c = corner[0];
 
-    while ((c.real < 1) && (c.imaginary > -1)) {
+    while ((c.real < corner[1].real) && (c.imaginary > corner[1].imaginary)) {
         var iterations = mandelbrotTest([c]);
 
-        output.push(createText((x_dim - (x_dim / 3)) + ((x_dim / 3) * c.real)));
-        output.push(createText((y_dim - (y_dim / 2)) - ((y_dim / 2) * c.imaginary)));
+        output.push(createText((x_dim - (x_dim / (corner[0].real - corner[1].real))) + ((x_dim / (corner[0].real - corner[1].real)) * c.real)));
+        output.push(createText((y_dim - (y_dim / (corner[0].imaginary - corner[1].imaginary))) - ((y_dim / (corner[0].imaginary - corner[1].imaginary)) * c.imaginary)));
 
         if (iterations > 100) {
             output.push(colors[0]);
@@ -212,11 +212,11 @@ function mandelbrot(arg) {
             output.push(colors[8]);
         }
 
-        c.real += (3 / x_dim); 
+        c.real += ((corner[0].real - corner[1].real) / x_dim); 
 
-        if (c.real >= 1) {
-            c.imaginary += (-1 * (2 / y_dim));
-            c.real = -2;
+        if (c.real >= corner[1].real) {
+            c.imaginary += (corner[1].imaginary * ((corner[0].imaginary - corner[1].imaginary) / y_dim));
+            c.real = corner[0].real;
         }
     }
 
