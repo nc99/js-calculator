@@ -163,15 +163,15 @@ function mandelbrot(arg) {
     var x_dim = parseInt(input.objects[0].value);
     var y_dim = parseInt(input.objects[1].value);
 
-    var corner = [];alert("hello francis");
+    var corner = [];
     corner[0] = {"real":parseInt(input.objects[2]),"imaginary":parseInt(input.objects[3])};
-    corner[1] = {"real":parseInt(input.objects[4]),"imaginary":parseInt(input.objects[5])};alert("successsortof");
+    corner[1] = {"real":parseInt(input.objects[4]),"imaginary":parseInt(input.objects[5])};
 
     output[0] = createText(input.objects[0].value);
     output[1] = createText(input.objects[1].value);
 
     var colors = [];
-
+alert("aoesnuhansuhta,.u");
     if (colors.length < 9) {
         colors[0] = createText("#000000");
         colors[1] = createText("#888888");
