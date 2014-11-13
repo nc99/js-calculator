@@ -186,7 +186,7 @@ function mandelbrot(arg) {
     
     var c = corner[0];
     
-    alert(corner[1].real);
+    alert(input.objects[2] + " " + input.objects[3] + " " + input.objects[4] + " " + input.objects[5]);
     
     while ((c.real < corner[1].real) && (c.imaginary > corner[1].imaginary)) {
         var iterations = mandelbrotTest([c]);
