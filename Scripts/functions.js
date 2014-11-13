@@ -164,8 +164,8 @@ function mandelbrot(arg) {
     var y_dim = parseInt(input.objects[1].value);
 
     var corner = [];
-    corner[1] = {"real":parseInt(input.objects[2].value),"imaginary":parseInt(input.objects[3].value)};
-    corner[0] = {"real":parseInt(input.objects[4].value),"imaginary":parseInt(input.objects[5].value)};
+    corner[0] = {"real":parseInt(input.objects[2].value),"imaginary":parseInt(input.objects[3].value)};
+    corner[1] = {"real":parseInt(input.objects[4].value),"imaginary":parseInt(input.objects[5].value)};
 
     output[0] = createText(input.objects[0].value);
     output[1] = createText(input.objects[1].value);
@@ -184,13 +184,13 @@ function mandelbrot(arg) {
         colors[8] = createText("#ffffff");
     }
     
-    var c = corner[0];alert("working");
+    var c = corner[0];
     
     while ((c.real < corner[1].real) && (c.imaginary > corner[1].imaginary)) {
         var iterations = mandelbrotTest([c]);
 
-        output.push(createText((x_dim - (x_dim / (corner[0].real - corner[1].real))) + ((x_dim / (corner[0].real - corner[1].real)) * c.real)));
-        output.push(createText((y_dim - (y_dim / (corner[0].imaginary - corner[1].imaginary))) - ((y_dim / (corner[0].imaginary - corner[1].imaginary)) * c.imaginary)));
+        output.push(createText((x_dim - (x_dim / Math.abs(corner[0].real - corner[1].real))) + ((x_dim / Math.abs(corner[0].real - corner[1].real)) * c.real)));
+        output.push(createText((y_dim - (y_dim / Math.abs(corner[0].imaginary - corner[1].imaginary))) - ((y_dim / Math.abs(corner[0].imaginary - corner[1].imaginary)) * c.imaginary)));
 
         if (iterations > 100) {
             output.push(colors[0]);
@@ -212,10 +212,10 @@ function mandelbrot(arg) {
             output.push(colors[8]);
         }
 
-        c.real += ((corner[0].real - corner[1].real) / x_dim); 
+        c.real += (Math.abs(corner[0].real - corner[1].real) / x_dim); 
 
         if (c.real >= corner[1].real) {
-            c.imaginary += (corner[1].imaginary * ((corner[0].imaginary - corner[1].imaginary) / y_dim));
+            c.imaginary += (corner[1].imaginary * (Math.abs(corner[0].imaginary - corner[1].imaginary) / y_dim));
             c.real = corner[0].real;
         }
     }
