@@ -214,7 +214,7 @@ function mandelbrot(arg) {
 
         c.real += (Math.abs(corner[0].real - corner[1].real) / x_dim); 
 
-        if (c.real >= corner[1].real) {
+        if (c.real >= corner[1].real) {alert(c.imaginary);
             c.imaginary += (corner[1].imaginary * (Math.abs(corner[0].imaginary - corner[1].imaginary) / y_dim));
             c.real = corner[0].real;
         }
