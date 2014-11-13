@@ -164,8 +164,8 @@ function mandelbrot(arg) {
     var y_dim = parseInt(input.objects[1].value);
 
     var corner = [];
-    corner[0] = {"real":input.objects[2],"imaginary":input.objects[3]};
-    corner[1] = {"real":input.objects[4],"imaginary":input.objects[5]};
+    corner[0] = {"real":parseInt(input.objects[2]),"imaginary":parseInt(input.objects[3])};
+    corner[1] = {"real":parseInt(input.objects[4]),"imaginary":parseInt(input.objects[5])};
 
     output[0] = createText(input.objects[0].value);
     output[1] = createText(input.objects[1].value);
