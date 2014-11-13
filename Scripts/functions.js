@@ -164,8 +164,8 @@ function mandelbrot(arg) {
     var y_dim = parseInt(input.objects[1].value);
 
     var corner = [];
-    corner[0] = {"real":parseInt(input.objects[2]),"imaginary":parseInt(input.objects[3])};
-    corner[1] = {"real":parseInt(input.objects[4]),"imaginary":parseInt(input.objects[5])};
+    corner[0] = {"real":parseInt(input.objects[2].value),"imaginary":parseInt(input.objects[3].value)};
+    corner[1] = {"real":parseInt(input.objects[4].value),"imaginary":parseInt(input.objects[5].value)};
 
     output[0] = createText(input.objects[0].value);
     output[1] = createText(input.objects[1].value);
@@ -185,8 +185,6 @@ function mandelbrot(arg) {
     }
     
     var c = corner[0];
-    
-    alert(input.objects[2] + " " + input.objects[3] + " " + input.objects[4] + " " + input.objects[5]);
     
     while ((c.real < corner[1].real) && (c.imaginary > corner[1].imaginary)) {
         var iterations = mandelbrotTest([c]);
