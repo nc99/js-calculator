@@ -184,7 +184,7 @@ function mandelbrot(arg) {
         colors[8] = createText("#ffffff");
     }
     
-    var c = corner[0];
+    var c = {"real":corner[0].real,"imaginary":corner[0].imaginary};
 
     while ((c.real < corner[1].real) && (c.imaginary > corner[1].imaginary)) {
         var iterations = mandelbrotTest([c]);
@@ -212,7 +212,6 @@ function mandelbrot(arg) {
             output.push(colors[8]);
         }
 
-	alert(Math.abs(corner[0].real - corner[1].real));
         c.real += (Math.abs(corner[0].real - corner[1].real) / x_dim);
 
         if (c.real >= corner[1].real) {
