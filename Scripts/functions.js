@@ -212,12 +212,13 @@ function mandelbrot(arg) {
             output.push(colors[8]);
         }
 
-        c.real += (Math.abs(corner[0].real - corner[1].real) / x_dim); 
+	alert(Math.abs(corner[0].real - corner[1].real));
+        c.real += (Math.abs(corner[0].real - corner[1].real) / x_dim);
 
-        if (c.real >= corner[1].real) {alert(c.imaginary);
+        if (c.real >= corner[1].real) {
             c.imaginary += (corner[1].imaginary * (Math.abs(corner[0].imaginary - corner[1].imaginary) / y_dim));
             c.real = corner[0].real;
-        }alert(c.real + " " + c.imaginary);
+        }
     }
 
     return drawPixels({"type":"array","objects":output});
