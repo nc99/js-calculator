@@ -349,15 +349,31 @@
 
         // Text field key presses
         function textFieldKeyCheck(event) {
-            if (event.keyCode == 13) {
+            if (event.keyCode == 13 && correctSyntax(document.getElementById("inputField").value)) {
                 submitInput();
-            } else if (event.keyCode == 38) {
+            } else if (event.keyCode == 13) {
+                fixSyntax();
+            }
+
+            else if (event.keyCode == 38) {
                 inputHistoryIncrease();
             } else if (event.keyCode == 40) {
                 inputHistoryDecrease();
             }
 
             updateTextFieldStyle();
+        }
+
+        function fixSyntax() {
+            input = document.getElementById("inputField").value;
+            if (input.split("(").length == 1) {
+                document.getElementById("inputField").value = document.getElementById("inputField").value + "()";
+            } else {
+                var times = input.split("(").length - input.split(")").length;
+                for (var i = 0; i < times; i++) {
+                    document.getElementById("inputField").value = document.getElementById("inputField").value + ")";
+                }
+            }
         }
 
         // Text field color changes
