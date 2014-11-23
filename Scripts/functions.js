@@ -5,6 +5,24 @@ function domainError(arg) {
     return {"type":"error","message":"Out of domain","from":arg};
 }
 
+var stored_objects = {};
+function store(arg) {
+    if (arg.type != "array") {
+        return dataTypeError("store");
+    }
+
+    stored_objects[arg.objects[1].value] = arg.objects[0];
+    return {"type":"text","value":"Object stored."};
+}
+
+function read(arg) {
+    if (arg.type != "text") {
+        return dataTypeError("read");
+    }
+
+    return stored_objects[arg.value];
+}
+
 function factorial(arg) {
     if (arg.type != "text") {
         return dataTypeError("factorial");

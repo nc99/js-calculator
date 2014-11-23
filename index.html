@@ -209,6 +209,31 @@
         	input = preprocess(input);
         }
 
+        function processArgument(argument) {
+            if (argument.split(",").length > 1) {
+                // It is an array
+                var arguments = argument.split(",");
+                var output = {"type":"array","objects":[]};
+                for (var i = 0; i < arguments.length; i++) {
+                    if (arguments[i].split(special_char).length > 1) {
+                        output.objects.push(stored_arguments[arguments[i].substring(1)]);
+                    } else {
+                        output.objects.push({"type":"text","value":arguments[i]});
+                    }  
+                }
+            } else {
+                // Not an array
+                if (argument.split(special_char).length > 1) {
+                    var output = {"type":"text","value":stored_arguments[argument.substring(1)]};
+                } else {
+                    var output = {"type":"text","value":argument};
+                }
+            }
+
+            stored_arguments.push(output);
+            return special_char + (stored_arguments.length - 1);
+        }
+
         function evaluateNestedFunctions(input) {
             var nestedFunction = input.substring(0, input.indexOf(")") + 1);
 
@@ -216,8 +241,12 @@
 
             // Split at first comma going back from ( of the function if there is one or
             // Split at first ( going back from ( of the function
+
+            // testing(1,testing(testing(2,3)
+            var beforeArguments = nestedFunction.substring(0,nestedFunction.lastIndexOf("(") - 1);
+                // testing(1,testing(testing
             
-            if (nestedFunction.substring(0,nestedFunction.lastIndexOf("(")).lastIndexOf(",") > nestedFunction.substring(0,nestedFunction.lastIndexOf("(")).lastIndexOf(")")) {
+            if (beforeArguments.lastIndexOf(",") > beforeArguments.lastIndexOf("(")) {
             	// There is a comma before the function name
                 nestedFunction = nestedFunction.substring(nestedFunction.lastIndexOf(",",nestedFunction.lastIndexOf("(") - 1) + 1);
             } else {
@@ -243,57 +272,19 @@
                 return evaluateNestedFunctions(firstPart + special_char + placeholder + secondPart);
             } else {
                 // Original input does not have a nested function, so return the original input evaluated.
-                if (input.split(special_char).length <= 1) {
-                    // Function does not have a special character
+                if ((input.split(special_char).length == 2) && (input.split(",").length == 1)) {
+                    // Function has only one argument and it is in special character notation
+                    return evaluateFunction(nestedFunction);
+                } else {
+                    // Function does not have a special character / is not in one argument form
                     var argument = input.substring(input.substring(0,input.indexOf(")")).lastIndexOf("(") + 1,input.indexOf(")"));
-
-                    // Check if array or not
-                    if (argument.split(",").length > 1) {
-                        // If is array
-                        var argument_array = argument.split(",");
-                        var output = {"type":"array","objects":[]};
-                        for (var i = 0; i < argument_array.length; i++) {
-                            output.objects.push({"type":"text","value":argument_array[i]});
-                        }
-                    } else {
-                        // If is not array
-                        var output = {"type":"text","value":argument};
-                    }
 
                     var firstPartOfArgument = input.substring(0,input.substring(0,input.indexOf(")")).lastIndexOf("(") + 1);
                     var secondPartOfArgument = input.substring(input.lastIndexOf(")"));
-  
-                    stored_arguments.push(output);
-                    return evaluateNestedFunctions(firstPartOfArgument + special_char + (stored_arguments.length - 1) + secondPartOfArgument);
-                } else {
-                    // Function has a special character
 
-                    var argument = nestedFunction.substring(nestedFunction.indexOf("(") + 1,nestedFunction.indexOf(")"));
-                    if (argument.split(",").length > 1) {
-                        // The argument is multiple and should be treated as an array
-                        var argument_array = argument.split(",");
-                        var argument_output = {"type":"array","objects":[]};
-                        for (var i = 0; i < argument_array.length; i++) {
-                            if (argument_array[i].split(special_char).length <= 1) {
-                                // Argument does not have a special character
-                                argument_output.objects.push({"type":"text","value":argument_array[i]});
-                            } else {
-                                // Argument has a special character
-                                argument_output.objects.push(stored_arguments[parseInt(argument_array[i].substring(argument_array[i].indexOf(special_char) + 1))]);
-                            }
-                        }
-
-                        stored_arguments.push(argument_output);
-
-                        return evaluateNestedFunctions(nestedFunction.substring(0,nestedFunction.indexOf("(") + 1) + special_char + (stored_arguments.length - 1) + ")");
-                    }
-
-
-                    return evaluateFunction(nestedFunction);
+                    return evaluateNestedFunctions(firstPartOfArgument + processArgument(argument) + secondPartOfArgument);
                 }
-            }
-
-            
+            }         
         }
 
 
@@ -316,6 +307,10 @@
                         return png(args);
                     } else if (functionName == "sum") {
                         return sum(args);
+                    } else if (functionName == "store") {
+                        return store(args);
+                    } else if (functionName == "read") {
+                        return read(args);
                     }
 
 
