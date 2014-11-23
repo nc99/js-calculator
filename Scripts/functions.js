@@ -133,10 +133,12 @@ function help(arg) {
     var commands = [
         {"name":"factorial","arguments":["n"],"description":"factorial of non-negative integer n"},
         {"name":"drawPixels","arguments":["width","height","pixel-x","pixel-y","pixel-color","pixel-x","pixel-y","pixel-color","..."],"description":"draws the pixels on the screen"},
-        {"name":"mandelbrot","arguments":["width","height"],"description":"draws a mandelbrot set from (-2+1i) to (1-1i)"},
+        {"name":"mandelbrot","arguments":["width","height","a","b","c","d"],"description":"draws a mandelbrot set from (a+bi) to (c+di)"},
         {"name":"canvas","arguments":["pixels"],"description":"returns a canvas of the pixels"},
         {"name":"png","arguments":["pixels"],"description":"returns a png image of the pixels"},
         {"name":"sum","arguments":["addends","..."],"description":"returns sum of the addends"},
+        {"name":"store","arguments":["object","location"],"description":"stores an object to the location name, can be retrieved with 'read' command"},
+        {"name":"read","arguments":["location"],"description":"retrieves stored object from the specified location"},
         {"name":"clear","arguments":[],"description":"clears the output space"},
     ];
 
