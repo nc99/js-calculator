@@ -23,6 +23,10 @@ function read(arg) {
     return stored_objects[arg.value];
 }
 
+function JSON_to_text(arg) {
+    return {"type":"text","value":JSON.stringify(arg)};
+}
+
 function factorial(arg) {
     if (arg.type != "text") {
         return dataTypeError("factorial");
