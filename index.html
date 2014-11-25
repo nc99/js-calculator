@@ -307,12 +307,14 @@
                         return png(args);
                     } else if (functionName == "sum") {
                         return sum(args);
+                    } else if (functionName == "multiply") {
+                        return multiply(args);
                     } else if (functionName == "store") {
                         return store(args);
                     } else if (functionName == "read") {
                         return read(args);
-                    } else if (functionName == "JSON_to_text") {
-                        return JSON_to_text(args);
+                    } else if (functionName == "object_to_text") {
+                        return object_to_text(args);
                     }
 
                     else if (functionName == "testing") {

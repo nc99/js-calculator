@@ -23,7 +23,7 @@ function read(arg) {
     return stored_objects[arg.value];
 }
 
-function JSON_to_text(arg) {
+function object_to_text(arg) {
     return {"type":"text","value":JSON.stringify(arg)};
 }
 
@@ -63,6 +63,26 @@ function sum(arg) {
 
     for (var i = 0; i < input.objects.length; i++) {
         output = output.add(new BigInteger(input.objects[i].value));
+    }
+
+    return {"type":"text","value":output.toString()};
+}
+
+function multiply(arg) {
+    if (arg.type != "array") {
+        if (arg.type == "text") {
+            return arg;
+        } else {
+            return dataTypeError("multiply");
+        }
+    }
+
+    var input = arg;
+
+    var output = BigInteger.ONE;
+
+    for (var i = 0; i < input.objects.length; i++) {
+        output = output.multiply(new BigInteger(input.objects[i].value));
     }
 
     return {"type":"text","value":output.toString()};
