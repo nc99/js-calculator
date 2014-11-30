@@ -20,6 +20,10 @@ span.code {
     border-radius: 2px;
 }
 
+.yellow {
+    color: yellow;
+}
+
 #about a:link,
 #about a:visited {
     color: #555555;

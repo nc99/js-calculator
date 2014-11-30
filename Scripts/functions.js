@@ -1,3 +1,6 @@
+importScripts("http://www-cs-students.stanford.edu/~tjw/jsbn/jsbn.js");
+importScripts("http://www-cs-students.stanford.edu/~tjw/jsbn/jsbn2.js");
+
 function dataTypeError(arg) {
     return {"type":"error","message":"Unnacceptable data input type","from":arg};
 }
@@ -40,9 +43,9 @@ function factorial(arg) {
 
     var output = BigInteger.ONE;
 
-	while (input.compareTo(BigInteger.ONE) != -1) {
-    	output = output.multiply(input);
-    	input = input.subtract(BigInteger.ONE);
+    while (input.compareTo(BigInteger.ONE) != -1) {
+        output = output.multiply(input);
+        input = input.subtract(BigInteger.ONE);
     }
 
     return {"type":"text","value":output.toString()};
