@@ -106,22 +106,9 @@ function canvas(arg) {
 
     var object = arg;
 
-    var canvas = document.createElement("canvas");
+    object.type = "canvas";
 
-    canvas.setAttribute("width",object.dimensions.x * 1);
-    canvas.setAttribute("height",object.dimensions.y * 1);
-    canvas.setAttribute("style","border:1px solid #eeeeee;");
-
-    for (var i = 0; i < object.pixels.length; i++) {
-        canvas.getContext("2d").fillStyle = object.pixels[i].color;
-        canvas.getContext("2d").fillRect(object.pixels[i].x * 1,object.pixels[i].y * 1,1,1);
-    }
-
-    var output = {
-        "type":"canvas",
-        "canvas":canvas
-    }
-
+    var output = object;
     return output;
 }
 

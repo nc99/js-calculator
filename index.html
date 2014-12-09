@@ -96,7 +96,18 @@
                 code_span.appendChild(document.createTextNode(object.value));
                 output.appendChild(code_span);
             } else if (object.type == "canvas") {
-				output.appendChild(object.canvas);
+            	var canvas = document.createElement("canvas");
+
+    			canvas.setAttribute("width",object.dimensions.x * 1);
+    			canvas.setAttribute("height",object.dimensions.y * 1);
+    			canvas.setAttribute("style","border:1px solid #eeeeee;");
+
+    			for (var i = 0; i < object.pixels.length; i++) {
+        			canvas.getContext("2d").fillStyle = object.pixels[i].color;
+        			canvas.getContext("2d").fillRect(object.pixels[i].x * 1,object.pixels[i].y * 1,1,1);
+    			}
+
+				output.appendChild(canvas);
         	} else if (object.type == "png") {
         		output.appendChild(object.image);
         	} else if (object.type == "error") {
