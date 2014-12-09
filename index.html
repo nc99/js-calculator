@@ -35,8 +35,11 @@
         }
 
         function outputBoldLine(input) {
-            var bold = document.createElement("b");
-            document.getElementById("output").appendChild(bold).appendChild(document.createTextNode(input));
+            var span = document.createElement("span");
+            span.setAttribute("class","bold");
+            span.appendChild(document.createTextNode(input));
+
+            document.getElementById("output").appendChild(span);
 
             // Add line break at the end
             var br = document.createElement("br");
