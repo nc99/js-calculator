@@ -1,5 +1,5 @@
-importScripts("http://www-cs-students.stanford.edu/~tjw/jsbn/jsbn.js");
-importScripts("http://www-cs-students.stanford.edu/~tjw/jsbn/jsbn2.js");
+importScripts("jsbn/jsbn.js");
+importScripts("jsbn/jsbn2.js");
 
 function dataTypeError(arg) {
     return {"type":"error","message":"Unnacceptable data input type","from":arg};

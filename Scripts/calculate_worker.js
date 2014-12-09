@@ -1,5 +1,5 @@
-importScripts("http://www-cs-students.stanford.edu/~tjw/jsbn/jsbn.js");
-importScripts("http://www-cs-students.stanford.edu/~tjw/jsbn/jsbn2.js");
+importScripts("jsbn/jsbn.js");
+importScripts("jsbn/jsbn2.js");
 importScripts("functions.js");
 
 addEventListener('message',function(e) {
@@ -140,9 +140,6 @@ function processMessage(e) {
                     else if (functionName == "help") {
                         return help(args);
                     } else if (functionName == "clear") {
-                        clearOutput();
-                        clearStatus();
-                        //clearInputHistory();
                         return "";
                     }
 
