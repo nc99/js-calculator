@@ -8,7 +8,7 @@ function domainError(arg) {
     return {"type":"error","message":"Out of domain","from":arg};
 }
 
-function finals_grade(arg) {return {"type":"text","value":"hello"};
+function finals_grade(arg) {
     if (arg.type != "array") {
         return dataTypeError("finals_grade");
     }
