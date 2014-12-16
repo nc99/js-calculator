@@ -8,6 +8,19 @@ function domainError(arg) {
     return {"type":"error","message":"Out of domain","from":arg};
 }
 
+function finals_grade(arg) {
+    if (arg.type != "array") {
+        return dataTypeError("finals_grade");
+    }
+    
+    var finals_percent = parseFloat(arg.objects[0].value);
+    var current_grade = parseFloat(arg.objects[1].value);
+    var desired_grade = parseFloat(arg.objects[2].value);
+    
+    var requried_finals_grade = (desired_grade - ((1 - finals_percent) * (current_grade))) / (finals_percent);
+    return {"type":"text","value":required_finals_grade};
+}
+
 var stored_objects = {};
 function store(arg) {
     if (arg.type != "array") {
