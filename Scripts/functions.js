@@ -8,16 +8,16 @@ function domainError(arg) {
     return {"type":"error","message":"Out of domain","from":arg};
 }
 
-function finals_grade(arg) {
+function finals_grade(arg) {alert(0);
     if (arg.type != "array") {
         return dataTypeError("finals_grade");
     }
-    
+    alert(1);
     var finals_percent = parseFloat(arg.objects[0].value);
     var current_grade = parseFloat(arg.objects[1].value);
-    var desired_grade = parseFloat(arg.objects[2].value);
+    var desired_grade = parseFloat(arg.objects[2].value);alert(2);
     
-    var requried_finals_grade = (desired_grade - ((1 - finals_percent) * (current_grade))) / (finals_percent);
+    var requried_finals_grade = (desired_grade - ((1 - finals_percent) * (current_grade))) / (finals_percent);alert(3);
     return {"type":"text","value":required_finals_grade};
 }
 
