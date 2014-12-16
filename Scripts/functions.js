@@ -166,6 +166,7 @@ function help(arg) {
         {"name":"sum","arguments":["addends","..."],"description":"returns sum of the addends"},
         {"name":"store","arguments":["object","location"],"description":"stores an object to the location name, can be retrieved with 'read' command"},
         {"name":"read","arguments":["location"],"description":"retrieves stored object from the specified location"},
+        {"name":"finals_grade","arguments":["finals percent","current grade","desired grade"],"description":"calculates grade necessary on final for desired grade"},
         {"name":"clear","arguments":[],"description":"clears the output space"},
     ];
 
