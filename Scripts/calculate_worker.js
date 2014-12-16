@@ -131,7 +131,6 @@ function processMessage(e) {
                     } else if (functionName == "object_to_text") {
                         return object_to_text(args);
                     } else if (functionName == "finals_grade") {
-                    	return {"type":"text","value":"hello"};
                     	return finals_grade(args);
                     }
 
