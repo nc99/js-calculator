@@ -13,7 +13,7 @@ function finals_grade(arg) {
         return dataTypeError("finals_grade");
     }
     
-    var finals_percent = parseFloat(arg.objects[0].value);
+    var finals_percent = parseFloat(arg.objects[0].value) / 100;
     var current_grade = parseFloat(arg.objects[1].value);
     var desired_grade = parseFloat(arg.objects[2].value);
     
