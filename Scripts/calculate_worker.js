@@ -130,6 +130,8 @@ function processMessage(e) {
                         return read(args);
                     } else if (functionName == "object_to_text") {
                         return object_to_text(args);
+                    } else if (functionName == "finals_grade") {
+                    	return finals_grade(args);
                     }
 
                     else if (functionName == "testing") {
