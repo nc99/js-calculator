@@ -12,7 +12,7 @@ function finals_grade(arg) {
     if (arg.type != "array") {
         return dataTypeError("finals_grade");
     }
-    
+    return {"type":"text","value":"hello"};
     var finals_percent = parseFloat(arg.objects[0].value);
     var current_grade = parseFloat(arg.objects[1].value);
     var desired_grade = parseFloat(arg.objects[2].value);
