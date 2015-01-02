@@ -181,7 +181,7 @@ function help(arg) {
     if (arg.value == "") {
         var command_names = Object.keys(commands);
 
-        output.lines.push({"type":"seamless array","objects":[{"type":"text","value":"Type "},{"type":"code","value":"help(function name)"},{"type":"text","value":" for a more detailed explanation about the specified function."}]});
+        output.lines.push({"type":"seamless array","objects":[{"type":"text","value":"Type "},{"type":"code","value":"help(function name)"},{"type":"text","value":" for a more detailed explanation of the specified function."}]});
         output.lines.push({"type":"text","value":""});
 
         for (var i = 0; i < command_names.length; i++) {
