@@ -408,9 +408,9 @@
         }
 
         function interpretURL(parameter_object) {
-            document.getElementById("inputField").value = parameter_object["in"];
+            document.getElementById("inputField").value = parameter_object["input"];
             var event = {"keyCode":0};
-            if (parameter_object["ev"] && (parameter_object["ev"] == 1)) {
+            if (parameter_object["evaluate"] && (parameter_object["ev"] == "true")) {
                 var event = {"keyCode":13};
             }
             textFieldKeyCheck(event);
