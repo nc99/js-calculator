@@ -410,7 +410,7 @@
         function interpretURL(parameter_object) {
             document.getElementById("inputField").value = parameter_object["input"];
             var event = {"keyCode":0};
-            if (parameter_object["evaluate"] && (parameter_object["evaluate"] == "true")) {
+            if (parameter_object["evaluate"]) {
                 var event = {"keyCode":13};
             }
             textFieldKeyCheck(event);
