@@ -132,6 +132,8 @@ function processMessage(e) {
                         return object_to_text(args);
                     } else if (functionName == "finals_grade") {
                     	return finals_grade(args);
+                    } else if (functionName == "get_bookmarklet") {
+                        return get_bookmarklet(args);
                     }
 
                     else if (functionName == "testing") {

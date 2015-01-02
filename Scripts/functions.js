@@ -8,6 +8,10 @@ function domainError(arg) {
     return {"type":"error","message":"Out of domain","from":arg};
 }
 
+function get_bookmarklet(arg) {
+    return {"type":"link","value":"Drag me to your bookmarks bar","href":"javascript:(function(){document.body.appendChild(document.createElement('script')).src='https://nicolaschan.com/js-calculator/Bookmarklet/bookmarklet.js';})();"};
+}
+
 function finals_grade(arg) {
     if (arg.type != "array") {
         return dataTypeError("finals_grade");
@@ -157,23 +161,38 @@ function png(arg) {
 }
 
 function help(arg) {
-    var commands = [
-        {"name":"factorial","arguments":["n"],"description":"factorial of non-negative integer n"},
-        {"name":"drawPixels","arguments":["width","height","pixel-x","pixel-y","pixel-color","pixel-x","pixel-y","pixel-color","..."],"description":"draws the pixels on the screen"},
-        {"name":"mandelbrot","arguments":["width","height","a","b","c","d"],"description":"draws a mandelbrot set from (a+bi) to (c+di)"},
-        {"name":"canvas","arguments":["pixels"],"description":"returns a canvas of the pixels"},
-        {"name":"png","arguments":["pixels"],"description":"returns a png image of the pixels"},
-        {"name":"sum","arguments":["addends","..."],"description":"returns sum of the addends"},
-        {"name":"store","arguments":["object","location"],"description":"stores an object to the location name, can be retrieved with 'read' command"},
-        {"name":"read","arguments":["location"],"description":"retrieves stored object from the specified location"},
-        {"name":"finals_grade","arguments":["finals percent","current grade","desired grade"],"description":"calculates grade necessary on final for desired grade"},
-        {"name":"clear","arguments":[],"description":"clears the output space"},
-    ];
+    if (arg.type != "text") {
+        return dataTypeError("help");
+    }
 
-    var output = {"type":"linedtext","lines":[]};
+    var commands = {
+        "factorial":{"description":"returns the factorial of the input","argument":"non-negative integer","example":"factorial(3)"},
+        "drawPixels":{"description":"draws specified pixels","argument":"width,height,pixel-x,pixel-y,pixel-color,...","example":"drawPixels(20,20,5,5,red,4,4,blue)"},
+        "mandelbrot":{"description":"draws a mandelbrot set","argument":"width,height,-2,1,1,-1","example":"mandelbrot(300,200,-2,1,1,-1)"},
+        "canvas":{"description":"used to display pixels","argument":"set of pixels","example":"canvas(drawPixels(20,20,5,5,red,4,4,blue))"},
+        "sum":{"description":"adds the input(s)","argument":"integer,integer,...","example":"sum(2,2)"},
+        "multiply":{"description":"multiplies the input(s)","argument":"integer,integer,...","example":"multiply(2,3)"},
+        "finals_grade":{"description":"calculates grade you need to get on a final to achieve desired grade in class","argument":"finals percent,current grade,desired grade","example":"finals_grade(15,95,90)"},
+        "get_bookmarklet":{"description":"gives you a link to bookmark so you can easily use this calculator","argument":"","example":"get_bookmarklet()"}
+    };
 
-    for (var i = 0; i < commands.length; i++) {
-        output.lines.push(createText(commands[i].name + "(" + commands[i].arguments + "): " + commands[i].description));
+    var output = {"type":"lines","lines":[]};
+
+    if (arg.value == "") {
+        var command_names = Object.keys(commands);
+
+        output.lines.push({"type":"seamless array","objects":[{"type":"text","value":"Type "},{"type":"code","value":"help(function name)"},{"type":"text","value":" for a more detailed explanation about the specified function."}]});
+        output.lines.push({"type":"text","value":""});
+
+        for (var i = 0; i < command_names.length; i++) {
+            output.lines.push({"type":"seamless array","objects":[{"type":"code","value":command_names[i]},{"type":"text","value":" " + commands[command_names[i]].description}]});
+        }
+    } else {
+        if (commands[arg.value]) {
+            output.lines.push({"type":"seamless array","objects":[{"type":"code","value":arg.value + "(" + commands[arg.value].argument + ")"},{"type":"text","value":" " + commands[arg.value].description + ", example: "},{"type":"code","value":commands[arg.value].example}]});
+        } else {
+            output.lines.push({"type":"error","message":"There is no help listing for the specified command.","from":"help"});
+        }
     }
 
     return output;

@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-        <title>nc99 JavaScript</title>
+        <title>JavaScript Calculator</title>
         <link href='https://fonts.googleapis.com/css?family=Anonymous+Pro' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
         <link href='Stylesheets/main.css' rel='stylesheet' type='text/css'>
@@ -76,7 +76,7 @@
         		}
         	} else if (object.type == "text") {
         		output.appendChild(document.createTextNode(object.value));
-        	} else if (object.type == "linedtext") {
+        	} else if (object.type == "lines") {
         		for (var i = 0; i < object.lines.length; i++) {
         			output.appendChild(displayObject(object.lines[i]));
 
@@ -84,17 +84,24 @@
                         output.appendChild(requestLinebreak());
                     }
         		}
-        	} else if (object.type == "coloredtext") {
+        	} else if (object.type == "seamless array") {
+                for (var i = 0; i < object.objects.length; i++) {
+                    output.appendChild(displayObject(object.objects[i]));
+                }
+            } else if (object.type == "fancy text") {
                 var text_node = document.createElement("span");
                 text_node.appendChild(document.createTextNode(object.value));
                 text_node.style.color = object.color;
                 output.appendChild(text_node);
-            }
-            else if (object.type == "code") {
-                var code_span = document.createElement("span");
-                code_span.setAttribute("class","code");
-                code_span.appendChild(document.createTextNode(object.value));
-                output.appendChild(code_span);
+            } else if (object.type == "code") {
+                var code = document.createElement("code");
+                code.appendChild(document.createTextNode(object.value));
+                output.appendChild(code);
+            } else if (object.type == "link") {
+                var link = document.createElement("a");
+                link.href = object.href;
+                link.appendChild(document.createTextNode(object.value));
+                output.appendChild(link);
             } else if (object.type == "canvas") {
             	var canvas = document.createElement("canvas");
 
@@ -362,9 +369,9 @@
         </script>
 </head>
 <body>
-	<h1>nc99 JavaScript Calculator</h1>
+	<h1>JavaScript Calculator</h1>
 	<p>
-        Type <span class="code">help()</span> for a list of commands.
+        Type <code>help()</code> for a list of commands.
 
         <!--
         <span id="about">
