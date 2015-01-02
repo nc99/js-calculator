@@ -79,10 +79,12 @@ span.terminate {
 span.terminate a:link,
 span.terminate a:visited {
     color: red;
+    opacity: 0.3;
     text-decoration: none;
+    transition: opacity 0.4s ease;
 }
 span.terminate a:hover {
-    font-weight: bold;
+    opacity: 1;
 }
 
 span.input-container {

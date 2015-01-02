@@ -263,7 +263,7 @@
                 var output = {"type":"fancy text","value":"Calculating...","color":"#aaaaaa"};
 
                 var calculate_worker = new Worker("Scripts/calculate_worker.js");
-                calculate_worker.postMessage({"input":input,"id":outputId});
+                calculate_worker.postMessage({"input":"(" + input + ")","id":outputId}); // parentheses around the input is so inputs such as "factorial(4),factorial(3)" evaluate correctly, in this case to [24,6]
                 calculate_worker.onmessage = function(e) {
                     document.getElementById("output" + e.data.id).removeChild(document.getElementById("temp" + e.data.id));
                     var output_object = displayObject(e.data.output);
@@ -279,7 +279,6 @@
 
             // Always execute after a command is submitted
             inputHistoryReset(); // Sets the current history to what is being typed (not something that you would get to from an up/down arrow)
-            clearStatus(); // Clears any warning messages
             document.getElementById("inputField").value = ""; // Clears the text field
         }
 
@@ -348,7 +347,19 @@
         }
 
         function correctSyntax(input) {
-            if ((input.split("(").length == input.split(")").length) && (input.split("(").length > 1)) {
+            // If there are the same number of ( as ) and at least one ( and the input ends in a )
+            if ((input.split("(").length == input.split(")").length) && (input.split("(").length > 1) && (input[input.length - 1] == ")")) {
+
+                // If there is either nothing, a ",", or a ) after all ")"s, return true
+                var pieces = input.split(")");
+                for (var i = 1; i < pieces.length; i++) {
+                    if ((pieces[i][0] == "") || (pieces[i][0] == ",") || (pieces[i][0] == ")") || (pieces[i][0] == undefined)) {
+
+                    } else {
+                        return false;
+                    }
+                }
+
                 return true;
             } else {
                 return false;
@@ -394,24 +405,14 @@
 	<h1>JavaScript Calculator</h1>
 	<p>
         Type <code>help()</code> for a list of commands.
-
-        <!--
-        <span id="about">
-            <a onclick="showAbout()" href="#">Show</a>
-        </span>-->
     </p>
     <hr>
 
     <p id="output">
     </p>
 
-    <p id="status">
-    </p>
-
     <p id="inputFieldSection">
         <input type="text" onkeydown="textFieldKeyCheck(event)" onkeyup="updateTextFieldStyle()" onfocus="updateTextFieldStyle()" onmouseover="textFieldHoverEffect()" onmouseout="textFieldUnhoverEffect()" onblur="blurTextField()" name="inputField" class="inputField" id="inputField" spellcheck="false" autocomplete="off" autofocus>
-        <span id="progress">
-        </span>
     </p>
     
 </body>
