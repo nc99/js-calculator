@@ -218,19 +218,6 @@
 
         function clearOutput() {
         	document.getElementById("output").innerHTML = "";
-            clearStatus();
-        }
-
-        function setStatusMessage(input) {
-            setStatus(input + " <a onclick=\"clearStatus()\" href=\"#\">Dismiss</a>");
-        }
-
-        function clearStatus() {
-            setStatus("");
-        }
-
-        function setStatus(input) {
-        	document.getElementById("status").innerHTML = input;
         }
 
         function hideAbout() {
@@ -253,7 +240,6 @@
 
             if (input == "clear()") {
                 clearOutput();
-                clearStatus();
             } else {
                 var timer_worker = new Worker("Scripts/timer_worker.js");
                 timer_worker.postMessage({"id":outputId});
@@ -399,9 +385,39 @@
         function clearInputHistory() {
             inputHistory = [];
         }
+
+        // Check URL for function and whether to immediately evaluate it or not
+        function checkURL() {
+            // Check whether there is a ? in the URL
+            var url_pieces = document.URL.split("?");
+            if (url_pieces.length > 1) {
+                // There is a ?
+                var parameters = url_pieces[1].split("&"); // create an array of all the parameters, such as ["a=5","b=2"]
+                // For every parameter, put it in an object in the form {"a":5,"b":2}
+                var parameter_object = {};
+                for (var i = 0; i < parameters.length; i++) {
+                    var parameter_name = parameters[i].split("=")[0];
+                    var parameter_value = parameters[i].split("=")[1];
+                    parameter_object[parameter_name] = parameter_value;
+                }
+
+                interpretURL(parameter_object);
+            } else {
+                // There is no ? so don't bother doing anything
+            }
+        }
+
+        function interpretURL(parameter_object) {
+            document.getElementById("inputField").value = parameter_object["in"];
+            var event = {"keyCode":0};
+            if (parameter_object["ev"] && (parameter_object["ev"] == 1)) {
+                var event = {"keyCode":13};
+            }
+            textFieldKeyCheck(event);
+        }
         </script>
 </head>
-<body>
+<body onload="checkURL()">
 	<h1>JavaScript Calculator</h1>
 	<p>
         Type <code>help()</code> for a list of commands.

@@ -134,7 +134,7 @@ function processMessage(e) {
                     	return finals_grade(args);
                     } else if (functionName == "get_bookmarklet") {
                         return get_bookmarklet(args);
-                    }
+                    } 
 
                     else if (functionName == "testing") {
                     	return testing(args);
