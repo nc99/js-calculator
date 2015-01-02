@@ -158,18 +158,40 @@
         	var outputContent = args[2];
             var id = args[3];
 
+            // Create the span for the entire output for this command
+            var entire_output = document.createElement("span");
+            entire_output.setAttribute("id","full-output" + id);
+            document.getElementById("output").appendChild(entire_output);
+
         	// Output what the user typed in bold
         	var boldText = document.createElement("span");
         	boldText.setAttribute("class","bold");
         	boldText.appendChild(document.createTextNode(userInput));
-        	document.getElementById("output").appendChild(boldText);
+        	entire_output.appendChild(boldText);
 
         	// Output time information next to the user input
         	var subText = document.createElement("span");
         	subText.setAttribute("class","subText");
-            subText.setAttribute("id","time" + id);
-        	subText.innerHTML = subInput;
-        	document.getElementById("output").appendChild(subText);
+
+            var time = document.createElement("span");
+            time.setAttribute("id","time" + id);
+            subText.appendChild(time);
+
+        	time.innerHTML = subInput;
+
+            var terminate_button = document.createElement("span");
+            terminate_button.setAttribute("class","terminate");
+            terminate_button.appendChild(document.createTextNode(" ["));
+            var link = document.createElement("a");
+            
+
+            link.appendChild(document.createTextNode("x"));
+            link.href = "javascript: (function(){ document.getElementById('full-output' + " + id + ").style.display = 'none'; })();";
+            terminate_button.appendChild(link);
+            terminate_button.appendChild(document.createTextNode("]"));
+            subText.appendChild(terminate_button);
+
+        	entire_output.appendChild(subText);
 
         	// Output the loading stuff
 			 
@@ -178,16 +200,15 @@
 
         	var output = displayObject(outputContent);
         	output.appendChild(requestLinebreak());
-            output.setAttribute("class","output-object");
             output.setAttribute("id","temp" + id);
 
             output_wrapper.appendChild(output);
 
-        	document.getElementById("output").appendChild(requestLinebreak());
-       		document.getElementById("output").appendChild(output_wrapper);
+        	entire_output.appendChild(requestLinebreak());
+       		entire_output.appendChild(output_wrapper);
 
         	// Append two new lines at the end
-        	document.getElementById("output").appendChild(requestLinebreak());
+        	entire_output.appendChild(requestLinebreak());
         	document.getElementById("output").scrollTop = document.getElementById("output").scrollHeight;
         }
 
