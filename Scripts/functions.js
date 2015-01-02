@@ -2,7 +2,7 @@ importScripts("jsbn/jsbn.js");
 importScripts("jsbn/jsbn2.js");
 
 function dataTypeError(arg) {
-    return {"type":"error","message":"Unnacceptable data input type","from":arg};
+    return {"type":"error","message":"Incorrect data input type","from":arg};
 }
 function domainError(arg) {
     return {"type":"error","message":"Out of domain","from":arg};
