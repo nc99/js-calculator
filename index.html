@@ -263,7 +263,7 @@
                 var output = {"type":"fancy text","value":"Calculating...","color":"#aaaaaa"};
 
                 var calculate_worker = new Worker("Scripts/calculate_worker.js");
-                calculate_worker.postMessage({"input":"(" + input + ")","id":outputId}); // parentheses around the input is so inputs such as "factorial(4),factorial(3)" evaluate correctly, in this case to [24,6]
+                calculate_worker.postMessage({"input":input,"id":outputId});
                 calculate_worker.onmessage = function(e) {
                     document.getElementById("output" + e.data.id).removeChild(document.getElementById("temp" + e.data.id));
                     var output_object = displayObject(e.data.output);
