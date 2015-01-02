@@ -50,6 +50,10 @@ code {
 	word-wrap: break-word;
 }
 
+span.output-object {
+    border: 1px solid #eeeeee;
+}
+
 #inputFieldSection a:link,
 #inputFieldSection a:visited {
     color: #0000FF;
@@ -58,7 +62,7 @@ code {
 .inputField {
     border: 1px solid #cccccc;
     height: 20px;
-    width: 80%;
+    width: 90%;
     outline: none;
     font-family: 'Source Code Pro', monospace;
     font-size: 16px;
