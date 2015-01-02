@@ -238,7 +238,7 @@
                 timer_worker.onmessage = function(e) {
                     changeTime(e.data.time,e.data.id);
                 };
-                var output = {"type":"coloredtext","value":"Calculating...","color":"#aaaaaa"};
+                var output = {"type":"fancy text","value":"Calculating...","color":"#aaaaaa"};
 
                 var calculate_worker = new Worker("Scripts/calculate_worker.js");
                 calculate_worker.postMessage({"input":input,"id":outputId});
