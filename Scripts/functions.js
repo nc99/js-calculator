@@ -181,8 +181,8 @@ function help(arg) {
 
     var commands = {
         "factorial":{"description":"returns the factorial of the input","argument":"non-negative integer","example":"factorial(3)"},
-        "drawPixels":{"description":"draws specified pixels","argument":"width,height,pixel-x,pixel-y,pixel-color,...","example":"drawPixels(20,20,5,5,red,4,4,blue)"},
-        "mandelbrot":{"description":"draws a mandelbrot set","argument":"width,height,-2,1,1,-1","example":"mandelbrot(300,200,-2,1,1,-1)"},
+        "drawPixels":{"description":"draws specified pixels, requires canvas to display","argument":"width,height,pixel-x,pixel-y,pixel-color,...","example":"canvas(drawPixels(20,20,5,5,red,4,4,blue))"},
+        "mandelbrot":{"description":"draws a mandelbrot set, requires canvas to display","argument":"width,height,-2,1,1,-1","example":"canvas(mandelbrot(300,200,-2,1,1,-1))"},
         "canvas":{"description":"used to display pixels","argument":"set of pixels","example":"canvas(drawPixels(20,20,5,5,red,4,4,blue))"},
         "store":{"description":"stores text in a cookie","argument":"variable name,text to store,[days cookie lasts]","example":"store(myvariable,my stored text)"},
         "read":{"description":"returns stored text from a cookie","argument":"variable name","example":"read(myvariable)"},
