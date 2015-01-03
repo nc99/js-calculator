@@ -184,10 +184,14 @@ function help(arg) {
         "drawPixels":{"description":"draws specified pixels","argument":"width,height,pixel-x,pixel-y,pixel-color,...","example":"drawPixels(20,20,5,5,red,4,4,blue)"},
         "mandelbrot":{"description":"draws a mandelbrot set","argument":"width,height,-2,1,1,-1","example":"mandelbrot(300,200,-2,1,1,-1)"},
         "canvas":{"description":"used to display pixels","argument":"set of pixels","example":"canvas(drawPixels(20,20,5,5,red,4,4,blue))"},
+        "store":{"description":"stores text in a cookie","argument":"variable name,text to store,[days cookie lasts]","example":"store(myvariable,my stored text)"},
+        "read":{"description":"returns stored text from a cookie","argument":"variable name","example":"read(myvariable)"},
         "sum":{"description":"adds the input(s)","argument":"integer,integer,...","example":"sum(2,2)"},
         "multiply":{"description":"multiplies the input(s)","argument":"integer,integer,...","example":"multiply(2,3)"},
         "finals_grade":{"description":"calculates grade you need to get on a final to achieve desired grade in class","argument":"finals percent,current grade,desired grade","example":"finals_grade(15,95,90)"},
-        "get_bookmarklet":{"description":"gives you a link to bookmark so you can easily use this calculator","argument":"","example":"get_bookmarklet()"}
+        "get_bookmarklet":{"description":"gives you a link to bookmark so you can easily use this calculator","argument":"","example":"get_bookmarklet()"},
+        "clear":{"description":"clears all outputs","argument":"","example":"clear()"},
+        "help":{"description":"displays this help text","argument":"[function name]","example":"help()"}
     };
 
     var output = {"type":"lines","lines":[]};
