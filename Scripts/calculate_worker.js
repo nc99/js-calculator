@@ -128,6 +128,8 @@ function processMessage(e) {
                         return store(args);
                     } else if (functionName == "read") {
                         return read(args);
+                    } else if (functionName == "list_cookies") {
+                        return list_cookies(args);
                     } else if (functionName == "object_to_text") {
                         return object_to_text(args);
                     } else if (functionName == "finals_grade") {

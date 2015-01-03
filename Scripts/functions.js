@@ -25,14 +25,28 @@ function finals_grade(arg) {
     return {"type":"text","value":required_finals_grade};
 }
 
-var stored_objects = {};
+function list_cookies(arg) {
+	if (arg.type != "text") {
+        return dataTypeError("list_cookies");
+    }
+    return {"type":"list cookies"};
+}
+
+
 function store(arg) {
     if (arg.type != "array") {
         return dataTypeError("store");
     }
 
-    stored_objects[arg.objects[1].value] = arg.objects[0];
-    return {"type":"text","value":"Object stored."};
+    if ((arg.objects[0].type != "text") || (arg.objects[1].type != "text")) {
+    	return dataTypeError("store");
+    }
+
+    if (arg.objects[2]) {
+    	return {"type":"set cookie","name":arg.objects[0].value,"value":arg.objects[1].value,"expires":parseInt(arg.objects[2].value)};
+    } else {
+    	return {"type":"set cookie","name":arg.objects[0].value,"value":arg.objects[1].value,"expires":1};
+    }
 }
 
 function read(arg) {
@@ -40,7 +54,7 @@ function read(arg) {
         return dataTypeError("read");
     }
 
-    return stored_objects[arg.value];
+    return {"type":"read cookie","name":arg.value};
 }
 
 function object_to_text(arg) {
@@ -109,7 +123,7 @@ function multiply(arg) {
 }
 
 function testing(arg) {
-    return arg;
+    return {"type":"read cookie","name":"bob","value":"hello there","expires":1};
 }
 
 function createText(args) {

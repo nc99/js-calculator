@@ -117,7 +117,42 @@
 				output.appendChild(canvas);
         	} else if (object.type == "png") {
         		output.appendChild(object.image);
-        	} else if (object.type == "error") {
+        	} else if (object.type == "set cookie") {
+                var d = new Date();
+                d.setTime(d.getTime() + (object.expires * 24*60*60*1000)); // Thanks, http://www.w3schools.com/js/js_cookies.asp
+                var expriation_date = d.toUTCString();
+                document.cookie = object.name + "=" + object.value + "; expires=" + expriation_date;
+                if (object.expires > 0) {
+                    output.appendChild(displayObject({"type":"fancy text","value":"Cookie set.","color":"green"}));
+                } else {
+                    output.appendChild(displayObject({"type":"fancy text","value":"Cookie removed.","color":"red"}));
+                }
+                
+            } else if (object.type == "read cookie") {
+                var name = object.name + "=";
+                var cookie_array = document.cookie.split(";");
+
+                var success = false;
+                for (var i = 0; i < cookie_array.length; i++) {
+                    if ((cookie_array[i].indexOf(name) == 0) || (cookie_array[i].indexOf(" " + name) == 0)) {
+                        success = true;
+                        output.appendChild(displayObject({"type":"fancy text","value":cookie_array[i].split("=")[1],"color":"#555555"}));
+                    }
+                }
+                if (!success) {
+                    output.appendChild(displayObject({"type":"error","message":"Cookie not found.","from":"displayObject"}));
+                }
+            } else if (object.type == "list cookies") {
+                if (document.cookie == "") {
+                    output.appendChild(displayObject({"type":"fancy text","value":"No cookies to display.","color":"#555555"}));
+                } else {
+                    output.appendChild(displayObject({"type":"fancy text","value":document.cookie,"color":"#555555"}));
+                }
+                
+            }
+
+
+            else if (object.type == "error") {
         		var error_span = document.createElement("span");
         		error_span.setAttribute("class","error");
 
