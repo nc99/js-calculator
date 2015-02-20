@@ -43,7 +43,7 @@ function factor(input) {
 		factors[0] = factors[0] * -1;
 	}
 
-	return factors;
+	return {"type":"array","objects":factors};
 }
 
 function getPrimeFactor(input) {
