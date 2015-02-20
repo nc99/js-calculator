@@ -446,7 +446,9 @@
             document.getElementById("inputField").value = parameter_object["input"];
             var event = {"keyCode":0};
             if (parameter_object["evaluate"]) {
-                var event = {"keyCode":13};
+                if (parameter_object["evaluate"] == "true") {
+                    event = {"keyCode":13};
+                }
             }
             textFieldKeyCheck(event);
         }

@@ -8,6 +8,53 @@ function domainError(arg) {
     return {"type":"error","message":"Out of domain","from":arg};
 }
 
+
+function text(arg) {
+    if (arg.type != "text") {
+        return dataTypeError("text");
+    }
+    return {"type":"text","value":arg.value};
+}
+
+function isPrime(input) {
+	if (getPrimeFactor(input) === input) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function factor(input) {
+	var number = input;
+	var factors = [];
+
+	if (number < 0) {
+		number = -1 * number;
+	}
+	
+	while (!isPrime(number)) {
+		var prime_factor = getPrimeFactor(number);
+		factors.push(prime_factor);
+		number = number / prime_factor;
+	}
+	factors.push(number);
+
+	if (input < 0) {
+		factors[0] = factors[0] * -1;
+	}
+
+	return factors;
+}
+
+function getPrimeFactor(input) {
+	for (var i = 2; i <= Math.sqrt(input); i++) {
+		if ((input % i) === 0) {
+			return i;
+		}
+	}
+	return input;
+}
+
 function get_bookmarklet(arg) {
     return {"type":"link","value":"Drag me to your bookmarks bar","href":"javascript:(function(){document.body.appendChild(document.createElement('script')).src='https://nicolaschan.com/js-calculator/Bookmarklet/bookmarklet.js';})();"};
 }
@@ -54,7 +101,7 @@ function read(arg) {
         return dataTypeError("read");
     }
 
-    return {"type":"read cookie","name":arg.value};
+    return {"type":"text","name":arg.value};
 }
 
 function object_to_text(arg) {
@@ -123,7 +170,7 @@ function multiply(arg) {
 }
 
 function testing(arg) {
-    return {"type":"read cookie","name":"bob","value":"hello there","expires":1};
+    return arg;
 }
 
 function createText(args) {

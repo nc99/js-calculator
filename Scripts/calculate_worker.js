@@ -18,11 +18,7 @@ function processMessage(e) {
 // Evaluate functions
         var stored_arguments = [];
         var special_char = "$";
-
-        function interpretInput(arg) {
-        	var input = arg;
-        	input = preprocess(input);
-        }
+        var escape_char = "\\";
 
         function processArgument(argument) {
             if (argument.split(",").length > 1) {
@@ -136,7 +132,11 @@ function processMessage(e) {
                     	return finals_grade(args);
                     } else if (functionName == "get_bookmarklet") {
                         return get_bookmarklet(args);
-                    } 
+                    } else if (functionName == "text") {
+                        return text(args);
+                    } else if (functionName == "factor") {
+                        return factor(args);
+                    }
 
                     else if (functionName == "testing") {
                     	return testing(args);
