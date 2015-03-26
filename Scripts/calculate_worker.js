@@ -69,6 +69,9 @@ function processArgument(argument) {
 }
 
 function evaluateNestedFunctions(input) {
+    if (input[input.length - 1] !== ')') {
+        input = input + ')';
+    }
     var nestedFunction = input.substring(0, input.indexOf(")"));
 
     // This section gets the nested function to evaluate

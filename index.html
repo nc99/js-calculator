@@ -149,6 +149,8 @@
                     output.appendChild(displayObject({"type":"fancy text","value":document.cookie,"color":"#555555"}));
                 }
                 
+            } else if (object.type == "function") {
+                output.appendChild(document.createTextNode('Function: ' + object.command));
             }
 
 
