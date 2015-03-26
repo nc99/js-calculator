@@ -43,10 +43,10 @@ function factor(input) {
 
 	while (!isPrime(number)) {
 		var prime_factor = getPrimeFactor(number);
-		factors.push({"type":"text","value":prime_factor});
+		factors.push({"type":"text","value":prime_factor + ''});
 		number = number / prime_factor;
 	}
-	factors.push({"type":"text","value":number});
+	factors.push({"type":"text","value":number + ''});
 
 	if (input < 0) {
 		factors[0].value = '-' + factors[0].value;
