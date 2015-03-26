@@ -1,32 +1,32 @@
 <!doctype html>
 <html>
-<head>
-        <title>JavaScript Calculator</title>
-        <link href='https://fonts.googleapis.com/css?family=Anonymous+Pro' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700' rel='stylesheet' type='text/css'>
-        <link href='Stylesheets/main.css' rel='stylesheet' type='text/css'>
-        <link rel="icon" type="image/png" href="Assets/icons/js-favicon.png">
 
-        <script src="Scripts/jsbn/jsbn.js"></script>
-        <script src="Scripts/jsbn/jsbn2.js"></script>
-        <script src="Scripts/functions.js"></script>
-        <script>
+<head>
+    <title>JavaScript Calculator</title>
+    <link href='https://fonts.googleapis.com/css?family=Anonymous+Pro' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700' rel='stylesheet' type='text/css'>
+    <link href='Stylesheets/main.css' rel='stylesheet' type='text/css'>
+    <link rel="icon" type="image/png" href="Assets/icons/js-favicon.png">
+
+    <script src="Scripts/jsbn/jsbn.js"></script>
+    <script src="Scripts/jsbn/jsbn2.js"></script>
+    <script src="Scripts/functions.js"></script>
+    <script>
         // Check for compatibility
-        if (typeof(Worker) !== "undefined") {
-        } else {
+        if (typeof(Worker) !== "undefined") {} else {
             alert("your browser is not good enough");
         }
-        // Variables
+         // Variables
         var inputHistory = [];
         var outputHistory = [];
 
-        // Functions dealing with text output
+         // Functions dealing with text output
         function outputLine(input) {
-        	outputText(input);
-        
-       		// Add line break at the end
-       		var br = document.createElement("br");
-       		document.getElementById("output").appendChild(br);
+            outputText(input);
+
+            // Add line break at the end
+            var br = document.createElement("br");
+            document.getElementById("output").appendChild(br);
         }
 
         function outputDoubleLine(input) {
@@ -36,7 +36,7 @@
 
         function outputBoldLine(input) {
             var span = document.createElement("span");
-            span.setAttribute("class","bold");
+            span.setAttribute("class", "bold");
             span.appendChild(document.createTextNode(input));
 
             document.getElementById("output").appendChild(span);
@@ -47,44 +47,56 @@
         }
 
         function outputText(input) {
-       		document.getElementById("output").appendChild(document.createTextNode(input));
+            document.getElementById("output").appendChild(document.createTextNode(input));
         }
 
         function testFunction() {
-        	outputFormatted(["input","time","output"]);
+            outputFormatted(["input", "time", "output"]);
         }
 
         function displayObject(args) {
-        	var object = args;
+            var object = args;
 
-			var output = document.createElement("span");
-        	output.setAttribute("class","output");
+            var output = document.createElement("span");
+            output.setAttribute("class", "output");
 
-        	if (object.type == "array") {
-        		for (var i = 0; i < object.objects.length; i++) {
-        			if (i == 0) {
-        				output.appendChild(displayObject({"type":"fancy text","value":'[',"color":"#aaaaaa"}));
-        			}
+            if (object.type == "array") {
+                for (var i = 0; i < object.objects.length; i++) {
+                    if (i == 0) {
+                        output.appendChild(displayObject({
+                            "type": "fancy text",
+                            "value": '[',
+                            "color": "#aaaaaa"
+                        }));
+                    }
 
-        			output.appendChild(displayObject(object.objects[i]));
+                    output.appendChild(displayObject(object.objects[i]));
 
-        			if (i == object.objects.length - 1) {
-        				output.appendChild(displayObject({"type":"fancy text","value":']',"color":"#aaaaaa"}));
-        			} else {
-        				output.appendChild(displayObject({"type":"fancy text","value":',',"color":"#aaaaaa"}));
-        			}
-        		}
-        	} else if (object.type == "text") {
-        		output.appendChild(document.createTextNode(object.value));
-        	} else if (object.type == "lines") {
-        		for (var i = 0; i < object.lines.length; i++) {
-        			output.appendChild(displayObject(object.lines[i]));
+                    if (i == object.objects.length - 1) {
+                        output.appendChild(displayObject({
+                            "type": "fancy text",
+                            "value": ']',
+                            "color": "#aaaaaa"
+                        }));
+                    } else {
+                        output.appendChild(displayObject({
+                            "type": "fancy text",
+                            "value": ',',
+                            "color": "#aaaaaa"
+                        }));
+                    }
+                }
+            } else if (object.type == "text") {
+                output.appendChild(document.createTextNode(object.value));
+            } else if (object.type == "lines") {
+                for (var i = 0; i < object.lines.length; i++) {
+                    output.appendChild(displayObject(object.lines[i]));
 
                     if (i != object.lines.length - 1) {
                         output.appendChild(requestLinebreak());
                     }
-        		}
-        	} else if (object.type == "seamless array") {
+                }
+            } else if (object.type == "seamless array") {
                 for (var i = 0; i < object.objects.length; i++) {
                     output.appendChild(displayObject(object.objects[i]));
                 }
@@ -103,31 +115,39 @@
                 link.appendChild(document.createTextNode(object.value));
                 output.appendChild(link);
             } else if (object.type == "canvas") {
-            	var canvas = document.createElement("canvas");
+                var canvas = document.createElement("canvas");
 
-    			canvas.setAttribute("width",object.dimensions.x * 1);
-    			canvas.setAttribute("height",object.dimensions.y * 1);
-    			canvas.setAttribute("style","border:1px solid #eeeeee;");
+                canvas.setAttribute("width", object.dimensions.x * 1);
+                canvas.setAttribute("height", object.dimensions.y * 1);
+                canvas.setAttribute("style", "border:1px solid #eeeeee;");
 
-    			for (var i = 0; i < object.pixels.length; i++) {
-        			canvas.getContext("2d").fillStyle = object.pixels[i].color;
-        			canvas.getContext("2d").fillRect(object.pixels[i].x * 1,object.pixels[i].y * 1,1,1);
-    			}
+                for (var i = 0; i < object.pixels.length; i++) {
+                    canvas.getContext("2d").fillStyle = object.pixels[i].color;
+                    canvas.getContext("2d").fillRect(object.pixels[i].x * 1, object.pixels[i].y * 1, 1, 1);
+                }
 
-				output.appendChild(canvas);
-        	} else if (object.type == "png") {
-        		output.appendChild(object.image);
-        	} else if (object.type == "set cookie") {
+                output.appendChild(canvas);
+            } else if (object.type == "png") {
+                output.appendChild(object.image);
+            } else if (object.type == "set cookie") {
                 var d = new Date();
-                d.setTime(d.getTime() + (object.expires * 24*60*60*1000)); // Thanks, http://www.w3schools.com/js/js_cookies.asp
+                d.setTime(d.getTime() + (object.expires * 24 * 60 * 60 * 1000)); // Thanks, http://www.w3schools.com/js/js_cookies.asp
                 var expriation_date = d.toUTCString();
                 document.cookie = object.name + "=" + object.value + "; expires=" + expriation_date;
                 if (object.expires > 0) {
-                    output.appendChild(displayObject({"type":"fancy text","value":"Cookie set.","color":"green"}));
+                    output.appendChild(displayObject({
+                        "type": "fancy text",
+                        "value": "Cookie set.",
+                        "color": "green"
+                    }));
                 } else {
-                    output.appendChild(displayObject({"type":"fancy text","value":"Cookie removed.","color":"red"}));
+                    output.appendChild(displayObject({
+                        "type": "fancy text",
+                        "value": "Cookie removed.",
+                        "color": "red"
+                    }));
                 }
-                
+
             } else if (object.type == "read cookie") {
                 var name = object.name + "=";
                 var cookie_array = document.cookie.split(";");
@@ -136,94 +156,105 @@
                 for (var i = 0; i < cookie_array.length; i++) {
                     if ((cookie_array[i].indexOf(name) == 0) || (cookie_array[i].indexOf(" " + name) == 0)) {
                         success = true;
-                        output.appendChild(displayObject({"type":"fancy text","value":cookie_array[i].split("=")[1],"color":"#555555"}));
+                        output.appendChild(displayObject({
+                            "type": "fancy text",
+                            "value": cookie_array[i].split("=")[1],
+                            "color": "#555555"
+                        }));
                     }
                 }
                 if (!success) {
-                    output.appendChild(displayObject({"type":"error","message":"Cookie not found.","from":"displayObject"}));
+                    output.appendChild(displayObject({
+                        "type": "error",
+                        "message": "Cookie not found.",
+                        "from": "displayObject"
+                    }));
                 }
             } else if (object.type == "list cookies") {
                 if (document.cookie == "") {
-                    output.appendChild(displayObject({"type":"fancy text","value":"No cookies to display.","color":"#555555"}));
+                    output.appendChild(displayObject({
+                        "type": "fancy text",
+                        "value": "No cookies to display.",
+                        "color": "#555555"
+                    }));
                 } else {
-                    output.appendChild(displayObject({"type":"fancy text","value":document.cookie,"color":"#555555"}));
+                    output.appendChild(displayObject({
+                        "type": "fancy text",
+                        "value": document.cookie,
+                        "color": "#555555"
+                    }));
                 }
-                
+
             } else if (object.type == "function") {
                 var text_node = document.createElement("span");
                 text_node.appendChild(document.createTextNode(object.command));
                 text_node.style.color = '#0066ff';
                 output.appendChild(text_node);
+            } else if (object.type == "error") {
+                var error_span = document.createElement("span");
+                error_span.setAttribute("class", "error");
+
+                var bold_span = document.createElement("span");
+                bold_span.setAttribute("class", "bold");
+
+                bold_span.appendChild(document.createTextNode("Error: "));
+                error_span.appendChild(bold_span);
+                error_span.appendChild(document.createTextNode(object.message));
+                //error_span.appendChild(requestLinebreak());
+                //error_span.appendChild(document.createTextNode("From: " + object.from));
+                //error_span.appendChild(requestLinebreak());
+                //error_span.appendChild(document.createTextNode("Details: " + object.details));
+
+                output.appendChild(error_span);
+            } else {
+                var error_span = document.createElement("span");
+                error_span.setAttribute("class", "error");
+
+                var bold_span = document.createElement("span");
+                bold_span.setAttribute("class", "bold");
+
+                bold_span.appendChild(document.createTextNode("Error: "));
+                error_span.appendChild(bold_span);
+                error_span.appendChild(document.createTextNode("Cannot display output type " + object.type));
+
+                output.appendChild(error_span);
             }
 
-
-            else if (object.type == "error") {
-        		var error_span = document.createElement("span");
-        		error_span.setAttribute("class","error");
-
-        		var bold_span = document.createElement("span");
-        		bold_span.setAttribute("class","bold");
-
-        		bold_span.appendChild(document.createTextNode("Error: "));
-        		error_span.appendChild(bold_span);
-        		error_span.appendChild(document.createTextNode(object.message));
-        		//error_span.appendChild(requestLinebreak());
-        		//error_span.appendChild(document.createTextNode("From: " + object.from));
-        		//error_span.appendChild(requestLinebreak());
-        		//error_span.appendChild(document.createTextNode("Details: " + object.details));
-
-        		output.appendChild(error_span);
-        	}
-
-        	else {
-        		var error_span = document.createElement("span");
-        		error_span.setAttribute("class","error");
-
-        		var bold_span = document.createElement("span");
-        		bold_span.setAttribute("class","bold");
-
-        		bold_span.appendChild(document.createTextNode("Error: "));
-        		error_span.appendChild(bold_span);
-        		error_span.appendChild(document.createTextNode("Cannot display output type " + object.type));
-
-        		output.appendChild(error_span);
-        	}
-
-        	return output;
+            return output;
         }
 
         function outputFormatted(args) {
-        	var userInput = args[0];
-        	var subInput = args[1];
-        	var outputContent = args[2];
+            var userInput = args[0];
+            var subInput = args[1];
+            var outputContent = args[2];
             var id = args[3];
 
             // Create the span for the entire output for this command
             var entire_output = document.createElement("span");
-            entire_output.setAttribute("id","full-output" + id);
+            entire_output.setAttribute("id", "full-output" + id);
             document.getElementById("output").appendChild(entire_output);
 
-        	// Output what the user typed in bold
-        	var boldText = document.createElement("span");
-        	boldText.setAttribute("class","bold");
-        	boldText.appendChild(document.createTextNode(userInput));
-        	entire_output.appendChild(boldText);
+            // Output what the user typed in bold
+            var boldText = document.createElement("span");
+            boldText.setAttribute("class", "bold");
+            boldText.appendChild(document.createTextNode(userInput));
+            entire_output.appendChild(boldText);
 
-        	// Output time information next to the user input
-        	var subText = document.createElement("span");
-        	subText.setAttribute("class","subText");
+            // Output time information next to the user input
+            var subText = document.createElement("span");
+            subText.setAttribute("class", "subText");
 
             var time = document.createElement("span");
-            time.setAttribute("id","time" + id);
+            time.setAttribute("id", "time" + id);
             subText.appendChild(time);
 
-        	time.innerHTML = subInput;
+            time.innerHTML = subInput;
 
             var terminate_button = document.createElement("span");
-            terminate_button.setAttribute("class","terminate");
+            terminate_button.setAttribute("class", "terminate");
             terminate_button.appendChild(document.createTextNode(" ["));
             var link = document.createElement("a");
-            
+
 
             link.appendChild(document.createTextNode("x"));
             link.href = "javascript: (function(){ document.getElementById('full-output' + " + id + ").style.display = 'none'; })();";
@@ -231,33 +262,33 @@
             terminate_button.appendChild(document.createTextNode("]"));
             subText.appendChild(terminate_button);
 
-        	entire_output.appendChild(subText);
+            entire_output.appendChild(subText);
 
-        	// Output the loading stuff
-			 
+            // Output the loading stuff
+
             var output_wrapper = document.createElement("span");
-            output_wrapper.setAttribute("id","output" + id);
+            output_wrapper.setAttribute("id", "output" + id);
 
-        	var output = displayObject(outputContent);
-        	output.appendChild(requestLinebreak());
-            output.setAttribute("id","temp" + id);
+            var output = displayObject(outputContent);
+            output.appendChild(requestLinebreak());
+            output.setAttribute("id", "temp" + id);
 
             output_wrapper.appendChild(output);
 
-        	entire_output.appendChild(requestLinebreak());
-       		entire_output.appendChild(output_wrapper);
+            entire_output.appendChild(requestLinebreak());
+            entire_output.appendChild(output_wrapper);
 
-        	// Append two new lines at the end
-        	entire_output.appendChild(requestLinebreak());
-        	document.getElementById("output").scrollTop = document.getElementById("output").scrollHeight;
+            // Append two new lines at the end
+            entire_output.appendChild(requestLinebreak());
+            document.getElementById("output").scrollTop = document.getElementById("output").scrollHeight;
         }
 
         function requestLinebreak() {
-        	return document.createElement("br");
+            return document.createElement("br");
         }
 
         function clearOutput() {
-        	document.getElementById("output").innerHTML = "";
+            document.getElementById("output").innerHTML = "";
         }
 
         function hideAbout() {
@@ -273,8 +304,9 @@
         }
 
 
-        // Parse the input
+         // Parse the input
         var outputId = 0;
+
         function submitInput() {
             var input = document.getElementById("inputField").value;
 
@@ -282,14 +314,23 @@
                 clearOutput();
             } else {
                 var timer_worker = new Worker("Scripts/timer_worker.js");
-                timer_worker.postMessage({"id":outputId});
+                timer_worker.postMessage({
+                    "id": outputId
+                });
                 timer_worker.onmessage = function(e) {
-                    changeTime(e.data.time,e.data.id);
+                    changeTime(e.data.time, e.data.id);
                 };
-                var output = {"type":"fancy text","value":"Calculating...","color":"#aaaaaa"};
+                var output = {
+                    "type": "fancy text",
+                    "value": "Calculating...",
+                    "color": "#aaaaaa"
+                };
 
                 var calculate_worker = new Worker("Scripts/calculate_worker.js");
-                calculate_worker.postMessage({"input":input,"id":outputId});
+                calculate_worker.postMessage({
+                    "input": input,
+                    "id": outputId
+                });
                 calculate_worker.onmessage = function(e) {
                     document.getElementById("output" + e.data.id).removeChild(document.getElementById("temp" + e.data.id));
                     var output_object = displayObject(e.data.output);
@@ -298,7 +339,7 @@
                     timer_worker.terminate();
                 };
 
-            	outputFormatted([input,0 + " cs",output,outputId]);
+                outputFormatted([input, 0 + " cs", output, outputId]);
                 outputId++;
                 inputHistory.push(input);
             }
@@ -308,15 +349,13 @@
             document.getElementById("inputField").value = ""; // Clears the text field
         }
 
-        // Text field key presses
+         // Text field key presses
         function textFieldKeyCheck(event) {
             if (event.keyCode == 13 && correctSyntax(document.getElementById("inputField").value)) {
                 submitInput();
             } else if (event.keyCode == 13) {
                 fixSyntax();
-            }
-
-            else if (event.keyCode == 38) {
+            } else if (event.keyCode == 38) {
                 inputHistoryIncrease();
             } else if (event.keyCode == 40) {
                 inputHistoryDecrease();
@@ -337,10 +376,11 @@
             }
         }
 
-        // Text field color changes
+         // Text field color changes
         var isFocused = false;
+
         function updateTextFieldStyle() {
-        	isFocused = true;
+            isFocused = true;
             var input = document.getElementById("inputField").value;
             if (input == "") {
                 // Blue
@@ -356,28 +396,33 @@
                 document.getElementById("inputField").style.color = "#000000";
             }
         }
+
         function blurTextField() {
-        	isFocused = false;
+            isFocused = false;
             document.getElementById("inputField").style.border = "1px solid #bbbbbb";
             //document.getElementById("inputField").style.color = "#cccccc"
         }
+
         function textFieldHoverEffect() {
-        	if (!isFocused) {
-        		document.getElementById("inputField").style.border = "1px solid #999999";
-        	}
+            if (!isFocused) {
+                document.getElementById("inputField").style.border = "1px solid #999999";
+            }
         }
+
         function textFieldUnhoverEffect() {
-        	if (!isFocused) {
-        		document.getElementById("inputField").style.border = "1px solid #bbbbbb";
-        	}
+            if (!isFocused) {
+                document.getElementById("inputField").style.border = "1px solid #bbbbbb";
+            }
         }
 
         function correctSyntax(input) {
-            var raw = input.split('\\');
-            input = raw[0];
-            for (var i = 1; i < raw.length; i++) {
-                input += raw[i].substring(1);
+            var escape_char = '\\';
+            var pieces = input.split(escape_char);
+
+            while (input.split(escape_char).length > 1) {
+                input = input.substring(0, input.indexOf(escape_char)) + input.substring(input.indexOf(escape_char) + 2);
             }
+
             // If there are the same number of ( as ) and at least one ( and the input ends in a )
             if ((input.split("(").length == input.split(")").length) && (input.split("(").length > 1) && (input[input.length - 1] == ")")) {
 
@@ -397,13 +442,13 @@
             }
         }
 
-        // Text field history on up/down arrow
+         // Text field history on up/down arrow
         var current = inputHistory.length; // This is the input history currently viewed.
         var typingInProgress = ""; // This is what the user has typed but has then left by pressing the up arrow.
 
         function inputHistoryIncrease() {
-        	if (current == inputHistory.length) {
-                    typingInProgress = document.getElementById("inputField").value;
+            if (current == inputHistory.length) {
+                typingInProgress = document.getElementById("inputField").value;
             }
 
             if (current > 0) {
@@ -411,9 +456,10 @@
                 document.getElementById("inputField").value = inputHistory[current];
             }
         }
+
         function inputHistoryDecrease() {
-        	if (current == inputHistory.length) {
-                    typingInProgress = document.getElementById("inputField").value;
+            if (current == inputHistory.length) {
+                typingInProgress = document.getElementById("inputField").value;
             }
 
             if (current > inputHistory.length - 2) {
@@ -424,14 +470,16 @@
                 document.getElementById("inputField").value = inputHistory[current];
             }
         }
+
         function inputHistoryReset() {
             current = inputHistory.length;
         }
+
         function clearInputHistory() {
             inputHistory = [];
         }
 
-        // Check URL for function and whether to immediately evaluate it or not
+         // Check URL for function and whether to immediately evaluate it or not
         function checkURL() {
             // Check whether there is a ? in the URL
             var url_pieces = document.URL.split("?");
@@ -454,19 +502,24 @@
 
         function interpretURL(parameter_object) {
             document.getElementById("inputField").value = parameter_object["input"];
-            var event = {"keyCode":0};
+            var event = {
+                "keyCode": 0
+            };
             if (parameter_object["evaluate"]) {
                 if (parameter_object["evaluate"] == "true") {
-                    event = {"keyCode":13};
+                    event = {
+                        "keyCode": 13
+                    };
                 }
             }
             textFieldKeyCheck(event);
         }
-        </script>
+    </script>
 </head>
+
 <body onload="checkURL()">
-	<h1>JavaScript Calculator</h1>
-	<p>
+    <h1>JavaScript Calculator</h1>
+    <p>
         Type <code>help()</code> for a list of commands.
     </p>
     <hr>
@@ -477,6 +530,7 @@
     <p id="inputFieldSection">
         <input type="text" onkeydown="textFieldKeyCheck(event)" onkeyup="updateTextFieldStyle()" onfocus="updateTextFieldStyle()" onmouseover="textFieldHoverEffect()" onmouseout="textFieldUnhoverEffect()" onblur="blurTextField()" name="inputField" class="inputField" id="inputField" spellcheck="false" autocomplete="off" autofocus>
     </p>
-    
+
 </body>
+
 </html>
