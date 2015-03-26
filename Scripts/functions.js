@@ -1,6 +1,3 @@
-importScripts("jsbn/jsbn.js");
-importScripts("jsbn/jsbn2.js");
-
 function dataTypeError(arg) {
     return {"type":"error","message":"Incorrect data input type","from":arg};
 }
@@ -181,7 +178,7 @@ function multiply(arg) {
     return {"type":"text","value":output.toString()};
 }
 
-function testing(arg) {
+function echo(arg) {
     return arg;
 }
 
