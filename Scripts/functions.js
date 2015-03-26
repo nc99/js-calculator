@@ -34,22 +34,22 @@ function isPrime(input) {
 }
 
 function factor(input) {
-	var number = input;
+	var number = parseInt(input.value);
 	var factors = [];
 
 	if (number < 0) {
 		number = -1 * number;
 	}
-	
+
 	while (!isPrime(number)) {
 		var prime_factor = getPrimeFactor(number);
-		factors.push(prime_factor);
+		factors.push({"type":"text","value":prime_factor});
 		number = number / prime_factor;
 	}
-	factors.push(number);
+	factors.push({"type":"text","value":number});
 
 	if (input < 0) {
-		factors[0] = factors[0] * -1;
+		factors[0].value = '-' + factors[0].value;
 	}
 
 	return {"type":"array","objects":factors};
