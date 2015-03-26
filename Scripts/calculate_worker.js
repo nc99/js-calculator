@@ -26,12 +26,15 @@ var escape_char = "\\";
 
 function preprocess(input) {
     var pieces = input.split(escape_char);
-    
+
     while (input.split(escape_char).length > 1) {
-        stored_arguments.push({"type":"text", "value":input.substring(input.indexOf(escape_char) + 1, input.indexOf(escape_char) + 2)});
+        stored_arguments.push({
+            "type": "text",
+            "value": input.substring(input.indexOf(escape_char) + 1, input.indexOf(escape_char) + 2)
+        });
         input = input.substring(0, input.indexOf(escape_char)) + start_marker + (stored_arguments.length - 1) + end_marker + input.substring(input.indexOf(escape_char) + 2);
     }
-    
+
     return input;
 }
 
@@ -55,18 +58,10 @@ function processArgument(argument) {
         }
     } else {
         // Not an array
-        if ((argument.split(start_marker).length > 1) && (argument.split(end_marker).length > 1)) {
-            console.log(argument);
-            var output = {
-                "type": "text",
-                "value": getArguments(argument)
-            };
-        } else {
-            var output = {
-                "type": "text",
-                "value": argument
-            };
-        }
+        var output = {
+            "type": "text",
+            "value": getArguments(argument)
+        };
     }
 
     stored_arguments.push(output);
@@ -164,6 +159,10 @@ function evaluateFunction(input) {
             return text(args);
         } else if (functionName == "factor") {
             return factor(args);
+        } else if (functionName == "function") {
+            return createFunction(args);
+        } else if (functionName == "execute") {
+            return executeFunction(args);
         } else if (functionName == "testing") {
             return testing(args);
         } else if (functionName == "help") {
@@ -199,7 +198,7 @@ function getArguments(arg) {
     var input = arg;
     var output = "";
 
-    var pieces = input.split(start_marker);
+    var pieces = input.substring(input.indexOf('(') + 1).split(start_marker);
 
     for (var i in pieces) {
         if (i > 0) {

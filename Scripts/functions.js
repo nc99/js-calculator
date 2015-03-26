@@ -8,6 +8,18 @@ function domainError(arg) {
     return {"type":"error","message":"Out of domain","from":arg};
 }
 
+function executeFunction(arg) {
+    if (arg.type !== "function") {
+        return dataTypeError("executeFunction");
+    }
+    return evaluateNestedFunctions(preprocess(arg.command));
+}
+function createFunction(arg) {
+    if (arg.type !== "text") {
+        return dataTypeError("createFunction");
+    }
+    return {"type":"function","command":arg.value};
+}
 
 function text(arg) {
     if (arg.type != "text") {
