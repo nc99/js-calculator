@@ -18,6 +18,26 @@ function createFunction(arg) {
     return {"type":"function","command":arg.value};
 }
 
+function condition_if(arg) {
+    if (arg.objects[0].type !== "boolean") {
+        return dataTypeError("condition_if");
+    }
+    
+    if (arg.objects[0].value === true) {
+        return arg.objects[1];
+    } else {
+        return arg.objects[2];
+    }
+}
+
+function equals(arg) {
+    if (JSON.stringify(arg.objects[0]) === JSON.stringify(arg.objects[1])) {
+        return {"type":"boolean","value":true};
+    } else {
+        return {"type":"boolean","value":false};
+    }
+}
+
 function text(arg) {
     if (arg.type != "text") {
         return dataTypeError("text");
@@ -94,14 +114,14 @@ function store(arg) {
         return dataTypeError("store");
     }
 
-    if ((arg.objects[0].type != "text") || (arg.objects[1].type != "text")) {
+    if (arg.objects[0].type != "text") {
     	return dataTypeError("store");
     }
 
     if (arg.objects[2]) {
-    	return {"type":"set cookie","name":arg.objects[0].value,"value":arg.objects[1].value,"expires":parseInt(arg.objects[2].value)};
+    	return {"type":"set cookie","name":arg.objects[0].value,"value":JSON.stringify(arg.objects[1]),"expires":parseInt(arg.objects[2].value)};
     } else {
-    	return {"type":"set cookie","name":arg.objects[0].value,"value":arg.objects[1].value,"expires":1};
+    	return {"type":"set cookie","name":arg.objects[0].value,"value":JSON.stringify(arg.objects[1]),"expires":1};
     }
 }
 
@@ -110,7 +130,7 @@ function read(arg) {
         return dataTypeError("read");
     }
 
-    return {"type":"text","name":arg.value};
+    return {"type":"read cookie","name":arg.value};
 }
 
 function object_to_text(arg) {

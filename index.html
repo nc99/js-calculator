@@ -156,11 +156,7 @@
                 for (var i = 0; i < cookie_array.length; i++) {
                     if ((cookie_array[i].indexOf(name) == 0) || (cookie_array[i].indexOf(" " + name) == 0)) {
                         success = true;
-                        output.appendChild(displayObject({
-                            "type": "fancy text",
-                            "value": cookie_array[i].split("=")[1],
-                            "color": "#555555"
-                        }));
+                        output.appendChild(displayObject(JSON.parse(cookie_array[i].split("=")[1])));
                     }
                 }
                 if (!success) {
@@ -190,6 +186,20 @@
                 text_node.appendChild(document.createTextNode(object.command));
                 text_node.style.color = '#0066ff';
                 output.appendChild(text_node);
+            } else if (object.type === "boolean") {
+                if (object.value === true) {
+                    output.appendChild(displayObject({
+                        "type": "fancy text",
+                        "value": "true",
+                        "color": "#7fff00"
+                    }));
+                } else {
+                    output.appendChild(displayObject({
+                        "type": "fancy text",
+                        "value": "false",
+                        "color": "#ff0000"
+                    }));
+                }
             } else if (object.type == "error") {
                 var error_span = document.createElement("span");
                 error_span.setAttribute("class", "error");

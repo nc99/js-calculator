@@ -166,6 +166,10 @@ function evaluateFunction(input) {
             return createFunction(args);
         } else if (functionName == "execute") {
             return executeFunction(args);
+        } else if (functionName == "equals") {
+            return equals(args);
+        } else if (functionName == "if") {
+            return condition_if(args);
         } else if (functionName == "echo") {
             return echo(args);
         } else if (functionName == "help") {
