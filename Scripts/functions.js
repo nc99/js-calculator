@@ -5,6 +5,71 @@ function domainError(arg) {
     return {"type":"error","message":"Out of domain","from":arg};
 }
 
+function data(arg) {
+    if (arg.type !== "array") {
+        return dataTypeError("data");
+    }
+    var data_arrays = arg.objects;
+    var dimensions = data_arrays[0].objects.length;
+    for (var i in data_arrays) {
+        if (data_arrays[i].type !== "array") {
+            return dataTypeError("data");
+        }
+        if (data_arrays[i].objects.length !== dimensions) {
+            return {"type":"error","message":"Inconsistent data dimensions","from":"data"};
+        }
+        for (var j in data_arrays[i].objects) {
+            data_arrays[i].objects[j] = parseFloat(data_arrays[i].objects[j].value);
+        }
+    }
+    return {"type":"data","dimensions":dimensions,"data":data_arrays};
+}
+
+function array(arg) {
+    return {"type":"array","objects":[arg]};
+}
+
+function plain_text(arg) {
+    if (arg.type !== "text") {
+        return dataTypeError("plain_text");
+    }
+    return arg.value;
+}
+
+function meta(arg) {
+    if (arg.type !== "array") {
+        return dataTypeError("meta");
+    }
+    var property = arg.objects[0];
+    var value = arg.objects[1];
+    var object = arg.objects[2];
+    
+    object[property] = value;
+    
+    return object;
+}
+
+function boolean_true(arg) {
+    return {"type":"boolean","value":true};
+}
+function boolean_false(arg) {
+    return {"type":"boolean","value":false};
+}
+
+function labeled_array(arg) {
+    if (arg.type !== "array") {
+        return dataTypeError("labeled_array"); 
+    }
+    var array = arg.objects;
+    var output = {"type":"labeled array","object":{}};
+
+    for (var i = 0; i < array.length - 1; i += 2) {
+        output.object[array[i].value] = array[i + 1];
+    }
+    
+    return output;
+}
+
 function executeFunction(arg) {
     if (arg.type !== "function") {
         return dataTypeError("executeFunction");
@@ -16,6 +81,20 @@ function createFunction(arg) {
         return dataTypeError("createFunction");
     }
     return {"type":"function","command":arg.value};
+}
+
+function select(arg) {
+    if (arg.objects[0].type !== "text") {
+        return dataTypeError("select");
+    }
+    if (arg.objects[1].type === "array") {
+        return arg.objects[1].objects[parseInt(arg.objects[0].value)];
+    } else if (arg.objects[1].type === "labeled array") {
+        return arg.objects[1].object[arg.objects[0].value];
+    } else {
+        return dataTypeError("select");
+    }
+    
 }
 
 function condition_if(arg) {
@@ -133,7 +212,7 @@ function read(arg) {
     return {"type":"read cookie","name":arg.value};
 }
 
-function object_to_text(arg) {
+function raw_json(arg) {
     return {"type":"text","value":JSON.stringify(arg)};
 }
 

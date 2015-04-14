@@ -130,7 +130,7 @@ function evaluateFunction(input) {
     var args = getArguments(input);
 
     if (true) {
-        if (functionName == "") {
+        if ((functionName == "") || (functionName == " ")) {
             return args;
         } else if (functionName == "factorial") {
             return factorial(args);
@@ -152,8 +152,8 @@ function evaluateFunction(input) {
             return read(args);
         } else if (functionName == "list_cookies") {
             return list_cookies(args);
-        } else if (functionName == "object_to_text") {
-            return object_to_text(args);
+        } else if (functionName == "raw_json") {
+            return raw_json(args);
         } else if (functionName == "finals_grade") {
             return finals_grade(args);
         } else if (functionName == "get_bookmarklet") {
@@ -170,6 +170,22 @@ function evaluateFunction(input) {
             return equals(args);
         } else if (functionName == "if") {
             return condition_if(args);
+        } else if (functionName == "select") {
+            return select(args);
+        } else if (functionName == "array") {
+            return array(args);
+        } else if (functionName == "data") {
+            return data(args);
+        } else if (functionName == "labeled_array") {
+            return labeled_array(args);
+        } else if (functionName == "true") {
+            return boolean_true(args);
+        } else if (functionName == "false") {
+            return boolean_false(args);
+        } else if (functionName == "meta") {
+            return meta(args);
+        } else if (functionName == "plain_text") {
+            return plain_text(args);
         } else if (functionName == "echo") {
             return echo(args);
         } else if (functionName == "help") {

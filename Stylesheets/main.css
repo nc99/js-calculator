@@ -15,6 +15,10 @@ hr {
     background: #dddddd;
 }
 
+table, td {
+    border: 1px solid #aaaaaa;
+}
+
 code {
     font-family: 'Source Code Pro', monospace;
     border: 1px solid #dddddd;

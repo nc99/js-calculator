@@ -86,6 +86,59 @@
                         }));
                     }
                 }
+            } else if (object.type === "labeled array") {
+                var linebreaks = object.linebreaks;
+
+                object = object.object;
+
+                output.appendChild(displayObject({
+                    "type": "fancy text",
+                    "value": "{",
+                    "color": "#aaaaaa"
+                }));
+
+                var first_time = true;
+                for (var key in object) {
+
+                    if (!first_time) {
+                        output.appendChild(displayObject({
+                            "type": "fancy text",
+                            "value": ',',
+                            "color": "#aaaaaa"
+                        }));
+                    }
+                    if (linebreaks) {
+                        output.appendChild(requestLinebreak());
+                    }
+                    first_time = false;
+                    output.appendChild(displayObject({
+                        "type": "fancy text",
+                        "value": key,
+                        "color": "#555555"
+                    }));
+                    output.appendChild(displayObject({
+                        "type": "fancy text",
+                        "value": ":",
+                        "color": "#aaaaaa"
+                    }));
+                    output.appendChild(displayObject(object[key]));
+                    delete object[key];
+
+                }
+                if (linebreaks) {
+                    output.appendChild(requestLinebreak());
+                }
+                output.appendChild(displayObject({
+                    "type": "fancy text",
+                    "value": "}",
+                    "color": "#aaaaaa"
+                }));
+            } else if (object.type === "data") {
+                var table = document.createElement('table');
+                for (var i in object.data) {
+                    table.appendChild(getTableRow(object.data[i].objects));
+                }
+                output.appendChild(table);
             } else if (object.type == "text") {
                 output.appendChild(document.createTextNode(object.value));
             } else if (object.type == "lines") {
@@ -233,6 +286,16 @@
             return output;
         }
 
+        function getTableRow(data) {
+            var tr = document.createElement('tr');
+            for (var i in data) {
+                var td = document.createElement('td');
+                td.appendChild(document.createTextNode(data[i]));
+                tr.appendChild(td);
+            }
+            return tr;
+        }
+        
         function outputFormatted(args) {
             var userInput = args[0];
             var subInput = args[1];
