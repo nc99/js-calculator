@@ -133,63 +133,63 @@ function evaluateFunction(input) {
         if ((functionName == "") || (functionName == " ")) {
             return args;
         } else if (functionName == "factorial") {
-            return factorial(args);
-        } else if (functionName == "drawPixels") {
-            return drawPixels(args);
+            return functions.factorial(args);
+        } else if (functionName == "draw_pixels") {
+            return functions.draw_pixels(args);
         } else if (functionName == "mandelbrot") {
-            return mandelbrot(args);
+            return functions.mandelbrot(args);
         } else if (functionName == "canvas") {
-            return canvas(args);
-        } else if (functionName == "png") {
-            return png(args);
+            return functions.canvas(args);
         } else if (functionName == "sum") {
-            return sum(args);
+            return functions.sum(args);
         } else if (functionName == "multiply") {
-            return multiply(args);
+            return functions.multiply(args);
         } else if (functionName == "store") {
-            return store(args);
+            return functions.store(args);
         } else if (functionName == "read") {
-            return read(args);
+            return functions.read(args);
         } else if (functionName == "list_cookies") {
-            return list_cookies(args);
+            return functions.list_cookies(args);
         } else if (functionName == "raw_json") {
-            return raw_json(args);
+            return functions.raw_json(args);
         } else if (functionName == "finals_grade") {
-            return finals_grade(args);
+            return functions.finals_grade(args);
         } else if (functionName == "get_bookmarklet") {
-            return get_bookmarklet(args);
+            return functions.get_bookmarklet(args);
+        } else if (functionName == "get_link") {
+            return functions.get_link(args);
         } else if (functionName == "text") {
-            return text(args);
+            return functions.text(args);
         } else if (functionName == "factor") {
-            return factor(args);
+            return functions.factor(args);
         } else if (functionName == "function") {
-            return createFunction(args);
-        } else if (functionName == "execute") {
-            return executeFunction(args);
+            return functions.function(args);
+        } else if (functionName == "evaluate") {
+            return functions.evaluate(args);
         } else if (functionName == "equals") {
-            return equals(args);
+            return functions.equals(args);
         } else if (functionName == "if") {
-            return condition_if(args);
+            return functions.condition_if(args);
         } else if (functionName == "select") {
-            return select(args);
+            return functions.select(args);
         } else if (functionName == "array") {
-            return array(args);
+            return functions.array(args);
         } else if (functionName == "data") {
-            return data(args);
+            return functions.data(args);
         } else if (functionName == "labeled_array") {
-            return labeled_array(args);
+            return functions.labeled_array(args);
         } else if (functionName == "true") {
-            return boolean_true(args);
+            return functions.boolean_true(args);
         } else if (functionName == "false") {
-            return boolean_false(args);
+            return functions.boolean_false(args);
         } else if (functionName == "meta") {
-            return meta(args);
+            return functions.meta(args);
         } else if (functionName == "plain_text") {
-            return plain_text(args);
+            return functions.plain_text(args);
         } else if (functionName == "echo") {
-            return echo(args);
+            return functions.echo(args);
         } else if (functionName == "help") {
-            return help(args);
+            return functions.help(args);
         } else if (functionName == "clear") {
             return "";
         } else {
