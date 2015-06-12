@@ -186,6 +186,16 @@ function evaluateFunction(input) {
             return functions.meta(args);
         } else if (functionName == "plain_text") {
             return functions.plain_text(args);
+        } else if (functionName == "window") {
+            return functions.window(args);
+        } else if (functionName == "property") {
+            return functions.property(args);
+        } else if (functionName == "properties") {
+            return functions.properties(args);
+        } else if (functionName == "children") {
+            return functions.children(args);
+        } else if (functionName == "dev_mode") {
+            return functions.dev_mode(args);
         } else if (functionName == "echo") {
             return functions.echo(args);
         } else if (functionName == "help") {

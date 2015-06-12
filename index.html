@@ -19,6 +19,7 @@
          // Variables
         var inputHistory = [];
         var outputHistory = [];
+        var dev_mode = false;
 
          // Functions dealing with text output
         function outputLine(input) {
@@ -269,6 +270,37 @@
                 //error_span.appendChild(document.createTextNode("Details: " + object.details));
 
                 output.appendChild(error_span);
+            } else if (object.type == "window") {
+                output.style.display = "table";
+                var window = document.createElement('span');
+                window.style.display = "table-cell";
+                for (var key in object.properties) {
+                    window.style[key] = object.properties[key];
+                }
+                for (var i in object.children) {
+                    window.appendChild(displayObject(object.children[i]));
+                }
+                
+                output.appendChild(window);
+            } else if (object.type == "dev_mode") {
+                if (object.value) {
+                    // enable developer mode
+                    dev_mode = true;
+                    output.appendChild(displayObject({
+                        "type": "fancy text",
+                        "value": "Developer features enabled",
+                        "color": "#cc66ff"
+                    }));
+                } else {
+                    // disable developer mode
+                    dev_mode = false;
+                    output.appendChild(displayObject({
+                        "type": "fancy text",
+                        "value": "Developer features disabled",
+                        "color": "#cc6699"
+                    }));
+                }
+
             } else {
                 var error_span = document.createElement("span");
                 error_span.setAttribute("class", "error");
@@ -278,7 +310,22 @@
 
                 bold_span.appendChild(document.createTextNode("Error: "));
                 error_span.appendChild(bold_span);
-                error_span.appendChild(document.createTextNode("Cannot display output type " + object.type));
+
+                var text = document.createTextNode("Cannot display output type " + object.type);
+                error_span.appendChild(text);
+
+                if (dev_mode) {
+                    var state = 0;
+                    error_span.addEventListener("click", function() {
+                        if (state === 0) {
+                            text.nodeValue = JSON.stringify(object);
+                            state = 1;
+                        } else {
+                            text.nodeValue = "Cannot display output type " + object.type;
+                            state = 0;
+                        }
+                    });
+                }
 
                 output.appendChild(error_span);
             }
@@ -295,7 +342,7 @@
             }
             return tr;
         }
-        
+
         function outputFormatted(args) {
             var userInput = args[0];
             var subInput = args[1];
@@ -310,7 +357,9 @@
             // Output what the user typed in bold
             var boldText = document.createElement("span");
             boldText.setAttribute("class", "bold");
-            boldText.appendChild(document.createTextNode(userInput));
+            boldText.setAttribute("id", "user-input" + id);
+            var inputTextNode = document.createTextNode(userInput);
+            boldText.appendChild(inputTextNode);
             entire_output.appendChild(boldText);
 
             // Output time information next to the user input
@@ -409,6 +458,20 @@
                     var output_object = displayObject(e.data.output);
                     output_object.appendChild(requestLinebreak());
                     document.getElementById("output" + e.data.id).appendChild(output_object);
+
+                    if (dev_mode) {
+                        var state = 0;
+                        document.getElementById("user-input" + e.data.id).addEventListener("click", function() {
+                            if (state === 0) {
+                                document.getElementById("user-input" + e.data.id).childNodes[0].nodeValue = JSON.stringify(e.data.output);
+                                state = 1;
+                            } else {
+                                document.getElementById("user-input" + e.data.id).childNodes[0].nodeValue = input;
+                                state = 0;
+                            }
+                        });
+                    }
+
                     timer_worker.terminate();
                 };
 

@@ -13,6 +13,54 @@ var functions = {
             "from": arg
         };
     },
+    dev_mode: function(arg) {
+        return {
+            "type": "dev_mode",
+            "value": arg.value
+        };
+    },
+    window: function(arg) {
+        return {
+            "type": "window",
+            "properties": arg.objects[0].properties,
+            "children": arg.objects[1].children
+        };
+    },
+    property: function(arg) {
+        return {
+            "type": "property",
+            "name": arg.objects[0].value,
+            "value": arg.objects[1].value
+        };
+    },
+    properties: function(arg) {
+        var output = {
+            "type": "properties",
+            "properties": {}
+        };
+        if (arg.type === "array") {
+            for (var i in arg.objects) {
+                output.properties[arg.objects[i].name] = arg.objects[i].value;
+            }
+        } else {
+            output.properties[arg.name] = arg.value;
+        }
+        return output;
+    },
+    children: function(arg) {
+        var output = {
+            "type": "children",
+            "children": []
+        };
+        if (arg.type === "array") {
+            for (var i in arg.objects) {
+                output.children.push(arg.objects[i]);
+            }
+        } else {
+            output.children.push(arg);
+        }
+        return output;
+    },
     data: function(arg) {
         if (arg.type !== "array") {
             return this.dataTypeError("data");
@@ -172,10 +220,10 @@ var functions = {
                 return false;
             }
         };
-        
+
         var number = parseInt(arg.value);
         var factors = [];
-        
+
         if (number < 0) {
             number = -1 * number;
         }
@@ -214,7 +262,11 @@ var functions = {
             return this.dataTypeError("get_link");
         }
         if (arg.objects.length !== 2) {
-            return {"type": "error", "message": "Incorrect number of terms (expected 2)", "from": "get_link"};
+            return {
+                "type": "error",
+                "message": "Incorrect number of terms (expected 2)",
+                "from": "get_link"
+            };
         }
         var link = "https://nicolaschan.com/js-calculator/?input=";
         link = link + arg.objects[0].value;
