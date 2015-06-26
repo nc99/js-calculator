@@ -457,113 +457,77 @@ var functions = {
             return this.dataTypeError("mandelbrot");
         }
 
-        var createText = function(args) {
-            return {
-                "type": "text",
-                "value": (args + "")
-            };
-        };
-        var mandelbrotTest = function(args) {
+        var width = parseFloat(arg.objects[0].value);
+        var height = parseFloat(arg.objects[1].value);
+
+        var corners = [{
+            real: parseFloat(arg.objects[2].value),
+            imaginary: parseFloat(arg.objects[3].value)
+        }, {
+            real: parseFloat(arg.objects[4].value),
+            imaginary: parseFloat(arg.objects[5].value)
+        }];
+
+        var color = function(c) {
             var iterations = 0;
-
-            var x = {
-                "real": 0,
-                "imaginary": 0
+            var z = {
+                real: 0,
+                imaginary: 0
             };
-
-            while (true) {
-                if ((mendelbrotOperation([x, args[0]]).real > 1000) || (mendelbrotOperation([x, args[0]]).imaginary > 1000)) {
-                    return iterations;
-                } else if (iterations > 100) {
-                    return iterations;
-                } else {
-                    iterations++;
-                    x = mendelbrotOperation([x, args[0]]);
-                }
+            while ((iterations <= 100) && (((z.real * z.real) + (z.imaginary * z.imaginary)) < 4)) {
+                z = {
+                    real: ((z.real * z.real) - (z.imaginary * z.imaginary)) + c.real,
+                    imaginary: (2 * ((z.real) * (z.imaginary))) + c.imaginary
+                };
+                iterations++;
             }
-        };
-        var mendelbrotOperation = function(args) {
-            var real = ((args[0].real * args[0].real) - (args[0].imaginary * args[0].imaginary) + args[1].real);
-            var imaginary = ((2 * (args[0].real * args[0].imaginary)) + args[1].imaginary);
-            return {
-                "real": real,
-                "imaginary": imaginary
-            };
-        };
-
-        var input = arg;
-        var output = [];
-
-        var x_dim = parseInt(input.objects[0].value);
-        var y_dim = parseInt(input.objects[1].value);
-
-        var corner = [];
-        corner[0] = {
-            "real": parseInt(input.objects[2].value),
-            "imaginary": parseInt(input.objects[3].value)
-        };
-        corner[1] = {
-            "real": parseInt(input.objects[4].value),
-            "imaginary": parseInt(input.objects[5].value)
-        };
-
-        output[0] = createText(input.objects[0].value);
-        output[1] = createText(input.objects[1].value);
-
-        var colors = [];
-
-        if (colors.length < 9) {
-            colors[0] = createText("#000000");
-            colors[1] = createText("#888888");
-            colors[2] = createText("#999999");
-            colors[3] = createText("#aaaaaa");
-            colors[4] = createText("#bbbbbb");
-            colors[5] = createText("#cccccc");
-            colors[6] = createText("#dddddd");
-            colors[7] = createText("#eeeeee");
-            colors[8] = createText("#ffffff");
-        }
-
-        var c = {
-            "real": corner[0].real,
-            "imaginary": corner[0].imaginary
-        };
-
-        while ((c.real < corner[1].real) && (c.imaginary > corner[1].imaginary)) {
-            var iterations = mandelbrotTest([c]);
-
-            output.push(createText((x_dim - (x_dim / Math.abs(corner[0].real - corner[1].real))) + ((x_dim / Math.abs(corner[0].real - corner[1].real)) * c.real)));
-            output.push(createText((y_dim - (y_dim / Math.abs(corner[0].imaginary - corner[1].imaginary))) - ((y_dim / Math.abs(corner[0].imaginary - corner[1].imaginary)) * c.imaginary)));
-
+            
             if (iterations > 100) {
-                output.push(colors[0]);
+                return "#000000";
             } else if (iterations >= 50) {
-                output.push(colors[1]);
+                return "#aaaaaa";
             } else if (iterations >= 20) {
-                output.push(colors[2]);
+                return "#bbbbbb";
             } else if (iterations >= 16) {
-                output.push(colors[3]);
+                return "#cccccc";
             } else if (iterations >= 14) {
-                output.push(colors[4]);
+                return "#dddddd";
             } else if (iterations >= 12) {
-                output.push(colors[5]);
-            } else if (iterations >= 10) {
-                output.push(colors[6]);
-            } else if (iterations >= 8) {
-                output.push(colors[7]);
+                return "#eeeeee";
             } else {
-                output.push(colors[8]);
+                return "#ffffff";
             }
+        };
 
-            c.real += (Math.abs(corner[0].real - corner[1].real) / x_dim);
+        var output = [{
+            "type": "text",
+            "value": width
+        }, {
+            "type": "text",
+            "value": height
+        }];
 
-            if (c.real >= corner[1].real) {
-                c.imaginary += (-1 * ((Math.abs(corner[0].imaginary - corner[1].imaginary) / y_dim)));
-                c.real = corner[0].real;
+        for (var i = 0; i <= height; i++) {
+            for (var r = 0; r <= width; r++) {
+                output.push({
+                    "type": "text",
+                    "value": r
+                });
+                output.push({
+                    "type": "text",
+                    "value": i
+                });
+                output.push({
+                    "type": "text",
+                    "value": color({
+                        real: corners[0].real + (r * ((corners[1].real - corners[0].real) / width)),
+                        imaginary: corners[0].imaginary + (i * ((corners[1].imaginary - corners[0].imaginary) / height))
+                    })
+                });
             }
         }
-
-        return drawPixels({
+        
+        return this.draw_pixels({
             "type": "array",
             "objects": output
         });
@@ -579,14 +543,14 @@ var functions = {
                 "argument": "non-negative integer",
                 "example": "factorial(3)"
             },
-            "drawPixels": {
+            "draw_pixels": {
                 "description": "draws specified pixels, requires canvas to display",
                 "argument": "width,height,pixel-x,pixel-y,pixel-color,...",
-                "example": "canvas(drawPixels(20,20,5,5,red,4,4,blue))"
+                "example": "canvas(draw_pixels(20,20,5,5,red,4,4,blue))"
             },
             "mandelbrot": {
                 "description": "draws a mandelbrot set, requires canvas to display",
-                "argument": "width,height,-2,1,1,-1",
+                "argument": "width,height,top left complex number real part,top left complex number imaginary part,bottom right complex number real part,bottom right complex number imaginary part",
                 "example": "canvas(mandelbrot(300,200,-2,1,1,-1))"
             },
             "canvas": {
